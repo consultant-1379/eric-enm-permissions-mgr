@@ -1,0 +1,1075 @@
+affinity: {}
+annotations: {}
+appArmorProfile:
+  type: ''
+appVersion: 1.0.1
+bandwidth:
+  maxEgressRate: 10M
+brAgent:
+  backupTypeList:
+  - one
+  - two
+  enabled: false
+global: {}
+imageCredentials:
+  mainImage:
+    registry:
+      imagePullPolicy: IfNotPresent
+    repoPath: null
+images:
+  eric-enm-permissions-mgr:
+    name: eric-enm-permissions-mgr
+    tag: VERSION
+  repoPath: proj-enm
+labels: {}
+metadata:
+  namespace: enm8139
+networkPolicy:
+  enabled: true
+nodeAffinity: {}
+nodeSelector: {}
+permissionMgrConfigs:
+  ericsson_autoprovisioning_claim_name: eric-enm-rwxpvc-autoprovisioning
+  ericsson_autoprovisioning_create_directories: /ericsson/autoprovisioning,/ericsson/autoprovisioning/artifacts,/ericsson/autoprovisioning/artifacts/download,/ericsson/autoprovisioning/artifacts/generated,/ericsson/autoprovisioning/artifacts/raw,/ericsson/autoprovisioning/artifacts/temp
+  ericsson_autoprovisioning_directory: /ericsson/autoprovisioning
+  ericsson_autoprovisioning_directory_included: 'true'
+  ericsson_autoprovisioning_dirmode: '2775'
+  ericsson_autoprovisioning_filemode: '660'
+  ericsson_autoprovisioning_g_u_bit: 'False'
+  ericsson_autoprovisioning_gid: '206'
+  ericsson_autoprovisioning_mount_path: /ericsson/autoprovisioning
+  ericsson_autoprovisioning_name: json
+  ericsson_autoprovisioning_permissions: '660'
+  ericsson_autoprovisioning_recurse_directories: 'true'
+  ericsson_autoprovisioning_uid: '217011'
+  ericsson_batch_data_claim_name: eric-enm-rwxpvc-batch
+  ericsson_batch_data_create_directories: /ericsson/batch/data,/ericsson/batch/data/export,/ericsson/batch/data/export/dynamic_export,/ericsson/batch/data/export/3gpp_export
+  ericsson_batch_data_directory: /ericsson/batch/data
+  ericsson_batch_data_directory_included: 'true'
+  ericsson_batch_data_dirmode: '2775'
+  ericsson_batch_data_filemode: '775'
+  ericsson_batch_data_g_u_bit: 'False'
+  ericsson_batch_data_gid: '206'
+  ericsson_batch_data_mount_path: /ericsson/batch
+  ericsson_batch_data_name: txt
+  ericsson_batch_data_permissions: '775'
+  ericsson_batch_data_recurse_directories: 'true'
+  ericsson_batch_data_uid: '290893'
+  ericsson_batch_undo_claim_name: eric-enm-rwxpvc-batch
+  ericsson_batch_undo_create_directories: /ericsson/batch/undo
+  ericsson_batch_undo_directory: /ericsson/batch/undo
+  ericsson_batch_undo_directory_included: 'true'
+  ericsson_batch_undo_dirmode: '2775'
+  ericsson_batch_undo_filemode: '775'
+  ericsson_batch_undo_g_u_bit: 'False'
+  ericsson_batch_undo_gid: '206'
+  ericsson_batch_undo_mount_path: /ericsson/batch/
+  ericsson_batch_undo_name: txt
+  ericsson_batch_undo_permissions: '775'
+  ericsson_batch_undo_recurse_directories: 'true'
+  ericsson_batch_undo_uid: '308'
+  ericsson_config_mgt_ebnfToJson_alarm_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_alarm_create_directories: /ericsson/config_mgt/ebnfToJson/alarm
+  ericsson_config_mgt_ebnfToJson_alarm_directory: /ericsson/config_mgt/ebnfToJson/alarm
+  ericsson_config_mgt_ebnfToJson_alarm_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_alarm_dirmode: '2775'
+  ericsson_config_mgt_ebnfToJson_alarm_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_alarm_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_alarm_gid: '206'
+  ericsson_config_mgt_ebnfToJson_alarm_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_alarm_name: json
+  ericsson_config_mgt_ebnfToJson_alarm_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_alarm_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_alarm_uid: '233902'
+  ericsson_config_mgt_ebnfToJson_ap_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_ap_create_directories: /ericsson/config_mgt/ebnfToJson/ap
+  ericsson_config_mgt_ebnfToJson_ap_directory: /ericsson/config_mgt/ebnfToJson/ap
+  ericsson_config_mgt_ebnfToJson_ap_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_ap_dirmode: '2770'
+  ericsson_config_mgt_ebnfToJson_ap_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_ap_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_ap_gid: '206'
+  ericsson_config_mgt_ebnfToJson_ap_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_ap_name: json
+  ericsson_config_mgt_ebnfToJson_ap_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_ap_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_ap_uid: '217011'
+  ericsson_config_mgt_ebnfToJson_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_create_directories: /ericsson/config_mgt/ebnfToJson
+  ericsson_config_mgt_ebnfToJson_directory: /ericsson/config_mgt/ebnfToJson
+  ericsson_config_mgt_ebnfToJson_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_dirmode: '2770'
+  ericsson_config_mgt_ebnfToJson_filemode: '440'
+  ericsson_config_mgt_ebnfToJson_fmedit_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_fmedit_create_directories: /ericsson/config_mgt/ebnfToJson/fmedit
+  ericsson_config_mgt_ebnfToJson_fmedit_directory: /ericsson/config_mgt/ebnfToJson/fmedit
+  ericsson_config_mgt_ebnfToJson_fmedit_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_fmedit_dirmode: '2775'
+  ericsson_config_mgt_ebnfToJson_fmedit_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_fmedit_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_fmedit_gid: '206'
+  ericsson_config_mgt_ebnfToJson_fmedit_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_fmedit_name: json
+  ericsson_config_mgt_ebnfToJson_fmedit_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_fmedit_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_fmedit_uid: '233902'
+  ericsson_config_mgt_ebnfToJson_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_gid: '206'
+  ericsson_config_mgt_ebnfToJson_lcmadm_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_lcmadm_create_directories: /ericsson/config_mgt/ebnfToJson/lcmadm
+  ericsson_config_mgt_ebnfToJson_lcmadm_directory: /ericsson/config_mgt/ebnfToJson/lcmadm
+  ericsson_config_mgt_ebnfToJson_lcmadm_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_lcmadm_dirmode: '2770'
+  ericsson_config_mgt_ebnfToJson_lcmadm_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_lcmadm_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_lcmadm_gid: '206'
+  ericsson_config_mgt_ebnfToJson_lcmadm_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_lcmadm_name: json
+  ericsson_config_mgt_ebnfToJson_lcmadm_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_lcmadm_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_lcmadm_uid: '274140'
+  ericsson_config_mgt_ebnfToJson_link_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_link_create_directories: /ericsson/config_mgt/ebnfToJson/link
+  ericsson_config_mgt_ebnfToJson_link_directory: /ericsson/config_mgt/ebnfToJson/link
+  ericsson_config_mgt_ebnfToJson_link_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_link_dirmode: '2770'
+  ericsson_config_mgt_ebnfToJson_link_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_link_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_link_gid: '206'
+  ericsson_config_mgt_ebnfToJson_link_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_link_name: json
+  ericsson_config_mgt_ebnfToJson_link_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_link_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_link_uid: '257943'
+  ericsson_config_mgt_ebnfToJson_mount_path: /ericsson/config_mgt/
+  ericsson_config_mgt_ebnfToJson_name: json
+  ericsson_config_mgt_ebnfToJson_netlog_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_netlog_create_directories: /ericsson/config_mgt/ebnfToJson/netlog
+  ericsson_config_mgt_ebnfToJson_netlog_directory: /ericsson/config_mgt/ebnfToJson/netlog
+  ericsson_config_mgt_ebnfToJson_netlog_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_netlog_dirmode: '2775'
+  ericsson_config_mgt_ebnfToJson_netlog_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_netlog_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_netlog_gid: '206'
+  ericsson_config_mgt_ebnfToJson_netlog_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_netlog_name: json
+  ericsson_config_mgt_ebnfToJson_netlog_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_netlog_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_netlog_uid: '233902'
+  ericsson_config_mgt_ebnfToJson_permissions: '440'
+  ericsson_config_mgt_ebnfToJson_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_secadm_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_ebnfToJson_secadm_create_directories: /ericsson/config_mgt/ebnfToJson/secadm
+  ericsson_config_mgt_ebnfToJson_secadm_directory: /ericsson/config_mgt/ebnfToJson/secadm
+  ericsson_config_mgt_ebnfToJson_secadm_directory_included: 'true'
+  ericsson_config_mgt_ebnfToJson_secadm_dirmode: '2775'
+  ericsson_config_mgt_ebnfToJson_secadm_filemode: '660'
+  ericsson_config_mgt_ebnfToJson_secadm_g_u_bit: 'False'
+  ericsson_config_mgt_ebnfToJson_secadm_gid: '206'
+  ericsson_config_mgt_ebnfToJson_secadm_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_ebnfToJson_secadm_name: json
+  ericsson_config_mgt_ebnfToJson_secadm_permissions: '660'
+  ericsson_config_mgt_ebnfToJson_secadm_recurse_directories: 'true'
+  ericsson_config_mgt_ebnfToJson_secadm_uid: '295828'
+  ericsson_config_mgt_ebnfToJson_uid: '308'
+  ericsson_config_mgt_healthcheck_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_healthcheck_create_directories: /ericsson/config_mgt/healthcheck
+  ericsson_config_mgt_healthcheck_directory: /ericsson/config_mgt/healthcheck
+  ericsson_config_mgt_healthcheck_directory_included: 'true'
+  ericsson_config_mgt_healthcheck_dirmode: '2775'
+  ericsson_config_mgt_healthcheck_filemode: '775'
+  ericsson_config_mgt_healthcheck_g_u_bit: 'False'
+  ericsson_config_mgt_healthcheck_gid: '206'
+  ericsson_config_mgt_healthcheck_mount_path: /ericsson/config_mgt/
+  ericsson_config_mgt_healthcheck_recurse_directories: 'true'
+  ericsson_config_mgt_healthcheck_uid: '308'
+  ericsson_config_mgt_import_files_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_import_files_create_directories: /ericsson/config_mgt/import_files
+  ericsson_config_mgt_import_files_directory: /ericsson/config_mgt/import_files
+  ericsson_config_mgt_import_files_directory_included: 'true'
+  ericsson_config_mgt_import_files_dirmode: '2775'
+  ericsson_config_mgt_import_files_filemode: '775'
+  ericsson_config_mgt_import_files_g_u_bit: 'False'
+  ericsson_config_mgt_import_files_gid: '206'
+  ericsson_config_mgt_import_files_mount_path: /ericsson/config_mgt/
+  ericsson_config_mgt_import_files_recurse_directories: 'true'
+  ericsson_config_mgt_import_files_uid: '308'
+  ericsson_config_mgt_netex_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_netex_create_directories: /ericsson/config_mgt/netex
+  ericsson_config_mgt_netex_directory: /ericsson/config_mgt/netex
+  ericsson_config_mgt_netex_directory_included: 'true'
+  ericsson_config_mgt_netex_dirmode: '2775'
+  ericsson_config_mgt_netex_filemode: '775'
+  ericsson_config_mgt_netex_g_u_bit: 'False'
+  ericsson_config_mgt_netex_gid: '206'
+  ericsson_config_mgt_netex_mount_path: /ericsson/config_mgt
+  ericsson_config_mgt_netex_name: json
+  ericsson_config_mgt_netex_permissions: '660'
+  ericsson_config_mgt_netex_recurse_directories: 'true'
+  ericsson_config_mgt_netex_uid: '296959'
+  ericsson_config_mgt_npam_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_npam_create_directories: /ericsson/config_mgt/npam,/ericsson/config_mgt/npam/import,/ericsson/config_mgt/npam/import_job
+  ericsson_config_mgt_npam_directory: /ericsson/config_mgt/npam
+  ericsson_config_mgt_npam_directory_included: 'true'
+  ericsson_config_mgt_npam_dirmode: '2770'
+  ericsson_config_mgt_npam_filemode: '660'
+  ericsson_config_mgt_npam_g_u_bit: 'False'
+  ericsson_config_mgt_npam_gid: '206'
+  ericsson_config_mgt_npam_mount_path: /ericsson/config_mgt/
+  ericsson_config_mgt_npam_recurse_directories: 'true'
+  ericsson_config_mgt_npam_uid: '270421'
+  ericsson_config_mgt_script_engine_claim_name: eric-enm-rwxpvc-configmgt
+  ericsson_config_mgt_script_engine_create_directories: /ericsson/config_mgt/script_engine
+  ericsson_config_mgt_script_engine_directory: /ericsson/config_mgt/script_engine
+  ericsson_config_mgt_script_engine_directory_included: 'true'
+  ericsson_config_mgt_script_engine_dirmode: '2775'
+  ericsson_config_mgt_script_engine_filemode: '775'
+  ericsson_config_mgt_script_engine_g_u_bit: 'False'
+  ericsson_config_mgt_script_engine_gid: '206'
+  ericsson_config_mgt_script_engine_mount_path: /ericsson/config_mgt/
+  ericsson_config_mgt_script_engine_name: json
+  ericsson_config_mgt_script_engine_permissions: '775'
+  ericsson_config_mgt_script_engine_recurse_directories: 'true'
+  ericsson_config_mgt_script_engine_uid: '308'
+  ericsson_configuration_management_UpgradeIndependence_claim_name: eric-enm-rwxpvc-upgind
+  ericsson_configuration_management_UpgradeIndependence_create_directories: /ericsson/configuration_management/UpgradeIndependence/node_models,/ericsson/configuration_management/UpgradeIndependence/add_support,/ericsson/configuration_management/UpgradeIndependence/pfm-models,/ericsson/configuration_management/UpgradeIndependence/swsync,/ericsson/configuration_management/UpgradeIndependence/workdir
+  ericsson_configuration_management_UpgradeIndependence_directory: /ericsson/configuration_management/UpgradeIndependence
+  ericsson_configuration_management_UpgradeIndependence_directory_included: 'true'
+  ericsson_configuration_management_UpgradeIndependence_dirmode: '2770'
+  ericsson_configuration_management_UpgradeIndependence_filemode: '660'
+  ericsson_configuration_management_UpgradeIndependence_g_u_bit: 'False'
+  ericsson_configuration_management_UpgradeIndependence_gid: '206'
+  ericsson_configuration_management_UpgradeIndependence_mount_path: /ericsson/configuration_management/UpgradeIndependence/
+  ericsson_configuration_management_UpgradeIndependence_name: json
+  ericsson_configuration_management_UpgradeIndependence_permissions: '660'
+  ericsson_configuration_management_UpgradeIndependence_recurse_directories: 'true'
+  ericsson_configuration_management_UpgradeIndependence_uid: '308'
+  ericsson_elect_export_path_claim_name: eric-enm-rwxpvc-elect
+  ericsson_elect_export_path_create_directories: /ericsson/elect-export-path,/ericsson/elect-export-path/export_logs_every_1_minute_with_retention_12_hours
+  ericsson_elect_export_path_directory: /ericsson/elect-export-path
+  ericsson_elect_export_path_directory_included: 'true'
+  ericsson_elect_export_path_dirmode: '2770'
+  ericsson_elect_export_path_filemode: '644'
+  ericsson_elect_export_path_g_u_bit: 'False'
+  ericsson_elect_export_path_gid: '5051'
+  ericsson_elect_export_path_mount_path: /ericsson/elect-export-path
+  ericsson_elect_export_path_recurse_directories: 'true'
+  ericsson_elect_export_path_uid: '254978'
+  ericsson_enm_alarmfiles_alarmsync_claim_name: eric-enm-rwxpvc-alarmsync
+  ericsson_enm_alarmfiles_alarmsync_create_directories: /ericsson/enm/alarmfiles/alarmsync/alarmsync
+  ericsson_enm_alarmfiles_alarmsync_directory: /ericsson/enm/alarmfiles/alarmsync
+  ericsson_enm_alarmfiles_alarmsync_directory_included: 'true'
+  ericsson_enm_alarmfiles_alarmsync_dirmode: '2777'
+  ericsson_enm_alarmfiles_alarmsync_filemode: '775'
+  ericsson_enm_alarmfiles_alarmsync_gid: '206'
+  ericsson_enm_alarmfiles_alarmsync_mount_path: /ericsson/enm/alarmfiles/alarmsync
+  ericsson_enm_alarmfiles_alarmsync_name: alarm
+  ericsson_enm_alarmfiles_alarmsync_permissions: '664'
+  ericsson_enm_alarmfiles_alarmsync_recurse_directories: 'true'
+  ericsson_enm_alarmfiles_alarmsync_uid: '179901'
+  ericsson_enm_dlms_history_data_claim_name: eric-enm-rwxpvc-dlms
+  ericsson_enm_dlms_history_data_create_directories: /ericsson/enm/dlms/history/data
+  ericsson_enm_dlms_history_data_directory: /ericsson/enm/dlms/history/data
+  ericsson_enm_dlms_history_data_directory_included: 'true'
+  ericsson_enm_dlms_history_data_dirmode: '2770'
+  ericsson_enm_dlms_history_data_filemode: '660'
+  ericsson_enm_dlms_history_data_g_u_bit: 'False'
+  ericsson_enm_dlms_history_data_gid: '4999'
+  ericsson_enm_dlms_history_data_mount_path: /ericsson/enm/dlms/history/data
+  ericsson_enm_dlms_history_data_recurse_directories: 'true'
+  ericsson_enm_dlms_history_data_uid: '102271'
+  ericsson_enm_dumps_apserv_claim_name: eric-enm-rwxpvc-hcdumps
+  ericsson_enm_dumps_apserv_create_directories: /ericsson/enm/dumps/apserv
+  ericsson_enm_dumps_apserv_directory: /ericsson/enm/dumps/apserv
+  ericsson_enm_dumps_apserv_directory_included: 'true'
+  ericsson_enm_dumps_apserv_dirmode: '2775'
+  ericsson_enm_dumps_apserv_filemode: '775'
+  ericsson_enm_dumps_apserv_g_u_bit: 'False'
+  ericsson_enm_dumps_apserv_gid: '206'
+  ericsson_enm_dumps_apserv_mount_path: /ericsson/enm/dumps
+  ericsson_enm_dumps_apserv_name: json
+  ericsson_enm_dumps_apserv_permissions: '660'
+  ericsson_enm_dumps_apserv_recurse_directories: 'true'
+  ericsson_enm_dumps_apserv_uid: '217011'
+  ericsson_enm_dumps_fmx_claim_name: eric-enm-rwxpvc-hcdumps
+  ericsson_enm_dumps_fmx_create_directories: /ericsson/enm/dumps/fmx
+  ericsson_enm_dumps_fmx_directory: /ericsson/enm/dumps/fmx
+  ericsson_enm_dumps_fmx_directory_included: 'true'
+  ericsson_enm_dumps_fmx_dirmode: '1775'
+  ericsson_enm_dumps_fmx_filemode: '775'
+  ericsson_enm_dumps_fmx_g_u_bit: 'False'
+  ericsson_enm_dumps_fmx_gid: '210'
+  ericsson_enm_dumps_fmx_mount_path: /ericsson/enm/dumps
+  ericsson_enm_dumps_fmx_recurse_directories: 'true'
+  ericsson_enm_dumps_fmx_uid: '210'
+  ericsson_georeplication_fm_data_claim_name: eric-enm-rwxpvc-georep
+  ericsson_georeplication_fm_data_create_directories: /ericsson/georeplication/fm/data
+  ericsson_georeplication_fm_data_directory: /ericsson/georeplication/fm/data
+  ericsson_georeplication_fm_data_directory_included: 'true'
+  ericsson_georeplication_fm_data_dirmode: '2770'
+  ericsson_georeplication_fm_data_filemode: '660'
+  ericsson_georeplication_fm_data_g_u_bit: 'False'
+  ericsson_georeplication_fm_data_gid: '206'
+  ericsson_georeplication_fm_data_mount_path: /ericsson/georeplication
+  ericsson_georeplication_fm_data_recurse_directories: 'true'
+  ericsson_georeplication_fm_data_uid: '102271'
+  ericsson_jms_claim_name: eric-enm-rwxpvc-jms
+  ericsson_jms_create_directories: /ericsson/jms/log,/ericsson/jms/data,/ericsson/jms/data/eap7,/ericsson/jms/data/eap7/bindings,/ericsson/jms/data/eap7/journal,/ericsson/jms/data/eap7/large-messages
+  ericsson_jms_directory: /ericsson/jms
+  ericsson_jms_directory_included: 'true'
+  ericsson_jms_dirmode: '2775'
+  ericsson_jms_filemode: '660'
+  ericsson_jms_g_u_bit: 'False'
+  ericsson_jms_gid: '206'
+  ericsson_jms_mount_path: /ericsson/jms
+  ericsson_jms_recurse_directories: 'true'
+  ericsson_jms_uid: '276813'
+  ericsson_netlog_erbs_claim_name: eric-enm-rwxpvc-netlog
+  ericsson_netlog_erbs_create_directories: /ericsson/netlog/erbs
+  ericsson_netlog_erbs_directory: /ericsson/netlog/erbs
+  ericsson_netlog_erbs_directory_included: 'true'
+  ericsson_netlog_erbs_dirmode: '2775'
+  ericsson_netlog_erbs_filemode: '660'
+  ericsson_netlog_erbs_g_u_bit: 'False'
+  ericsson_netlog_erbs_gid: '206'
+  ericsson_netlog_erbs_mount_path: /ericsson/netlog
+  ericsson_netlog_erbs_name: json
+  ericsson_netlog_erbs_permissions: '660'
+  ericsson_netlog_erbs_recurse_directories: 'true'
+  ericsson_netlog_erbs_uid: '233902'
+  ericsson_netlog_export_claim_name: eric-enm-rwxpvc-netlog
+  ericsson_netlog_export_create_directories: /ericsson/netlog/export
+  ericsson_netlog_export_directory: /ericsson/netlog/export
+  ericsson_netlog_export_directory_included: 'true'
+  ericsson_netlog_export_dirmode: '2775'
+  ericsson_netlog_export_filemode: '660'
+  ericsson_netlog_export_g_u_bit: 'False'
+  ericsson_netlog_export_gid: '206'
+  ericsson_netlog_export_mount_path: /ericsson/netlog
+  ericsson_netlog_export_name: json
+  ericsson_netlog_export_permissions: '660'
+  ericsson_netlog_export_recurse_directories: 'true'
+  ericsson_netlog_export_uid: '233902'
+  ericsson_netlog_fm_alarmroute_claim_name: eric-enm-rwxpvc-netlog
+  ericsson_netlog_fm_alarmroute_create_directories: /ericsson/netlog/fm/alarmroute,/ericsson/netlog/fm/alarmroute/data,/ericsson/netlog/fm/alarmroute/staging,/ericsson/netlog/fm/alarmroute/export
+  ericsson_netlog_fm_alarmroute_directory: /ericsson/netlog/fm/alarmroute
+  ericsson_netlog_fm_alarmroute_directory_included: 'true'
+  ericsson_netlog_fm_alarmroute_dirmode: '2770'
+  ericsson_netlog_fm_alarmroute_filemode: '660'
+  ericsson_netlog_fm_alarmroute_g_u_bit: 'False'
+  ericsson_netlog_fm_alarmroute_gid: '5003'
+  ericsson_netlog_fm_alarmroute_mount_path: /ericsson/netlog
+  ericsson_netlog_fm_alarmroute_name: json
+  ericsson_netlog_fm_alarmroute_permissions: '660'
+  ericsson_netlog_fm_alarmroute_recurse_directories: 'true'
+  ericsson_netlog_fm_alarmroute_uid: '102271'
+  ericsson_netlog_mgw_claim_name: eric-enm-rwxpvc-netlog
+  ericsson_netlog_mgw_create_directories: /ericsson/netlog/mgw
+  ericsson_netlog_mgw_directory: /ericsson/netlog/mgw
+  ericsson_netlog_mgw_directory_included: 'true'
+  ericsson_netlog_mgw_dirmode: '2775'
+  ericsson_netlog_mgw_filemode: '660'
+  ericsson_netlog_mgw_g_u_bit: 'False'
+  ericsson_netlog_mgw_gid: '206'
+  ericsson_netlog_mgw_mount_path: /ericsson/netlog
+  ericsson_netlog_mgw_name: json
+  ericsson_netlog_mgw_permissions: '660'
+  ericsson_netlog_mgw_recurse_directories: 'true'
+  ericsson_netlog_mgw_uid: '233902'
+  ericsson_netlog_radionode_claim_name: eric-enm-rwxpvc-netlog
+  ericsson_netlog_radionode_create_directories: /ericsson/netlog/radionode
+  ericsson_netlog_radionode_directory: /ericsson/netlog/radionode
+  ericsson_netlog_radionode_directory_included: 'true'
+  ericsson_netlog_radionode_dirmode: '2775'
+  ericsson_netlog_radionode_filemode: '660'
+  ericsson_netlog_radionode_g_u_bit: 'False'
+  ericsson_netlog_radionode_gid: '206'
+  ericsson_netlog_radionode_mount_path: /ericsson/netlog
+  ericsson_netlog_radionode_name: json
+  ericsson_netlog_radionode_permissions: '660'
+  ericsson_netlog_radionode_recurse_directories: 'true'
+  ericsson_netlog_radionode_uid: '233902'
+  ericsson_netlog_sgsn_mme_claim_name: eric-enm-rwxpvc-netlog
+  ericsson_netlog_sgsn_mme_create_directories: /ericsson/netlog/sgsn-mme
+  ericsson_netlog_sgsn_mme_directory: /ericsson/netlog/sgsn-mme
+  ericsson_netlog_sgsn_mme_directory_included: 'true'
+  ericsson_netlog_sgsn_mme_dirmode: '2775'
+  ericsson_netlog_sgsn_mme_filemode: '660'
+  ericsson_netlog_sgsn_mme_g_u_bit: 'False'
+  ericsson_netlog_sgsn_mme_gid: '206'
+  ericsson_netlog_sgsn_mme_mount_path: /ericsson/netlog
+  ericsson_netlog_sgsn_mme_name: json
+  ericsson_netlog_sgsn_mme_permissions: '660'
+  ericsson_netlog_sgsn_mme_recurse_directories: 'true'
+  ericsson_netlog_sgsn_mme_uid: '233902'
+  ericsson_pmic1_PRODUCTDATA__claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_PRODUCTDATA__create_directories: /ericsson/pmic1/PRODUCTDATA
+  ericsson_pmic1_PRODUCTDATA__directory: /ericsson/pmic1/PRODUCTDATA
+  ericsson_pmic1_PRODUCTDATA__directory_included: 'true'
+  ericsson_pmic1_PRODUCTDATA__dirmode: '2775'
+  ericsson_pmic1_PRODUCTDATA__filemode: '775'
+  ericsson_pmic1_PRODUCTDATA__g_u_bit: 'False'
+  ericsson_pmic1_PRODUCTDATA__gid: '206'
+  ericsson_pmic1_PRODUCTDATA__mount_path: /ericsson/pmic1
+  ericsson_pmic1_PRODUCTDATA__recurse_directories: 'true'
+  ericsson_pmic1_PRODUCTDATA__uid: '215550'
+  ericsson_pmic1_bulkcm_claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_bulkcm_create_directories: /ericsson/pmic1/bulkcm
+  ericsson_pmic1_bulkcm_directory: /ericsson/pmic1/bulkcm
+  ericsson_pmic1_bulkcm_directory_included: 'true'
+  ericsson_pmic1_bulkcm_dirmode: '2775'
+  ericsson_pmic1_bulkcm_filemode: '660'
+  ericsson_pmic1_bulkcm_g_u_bit: 'False'
+  ericsson_pmic1_bulkcm_gid: '206'
+  ericsson_pmic1_bulkcm_mount_path: /ericsson/pmic1
+  ericsson_pmic1_bulkcm_recurse_directories: 'true'
+  ericsson_pmic1_bulkcm_uid: '247207'
+  ericsson_pmic1_fls_claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_fls_create_directories: /ericsson/pmic1/fls
+  ericsson_pmic1_fls_directory: /ericsson/pmic1/fls
+  ericsson_pmic1_fls_directory_included: 'true'
+  ericsson_pmic1_fls_dirmode: '2775'
+  ericsson_pmic1_fls_file_already_exist_claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_fls_file_already_exist_create_directories: /ericsson/pmic1/fls_file_already_exist
+  ericsson_pmic1_fls_file_already_exist_directory: /ericsson/pmic1/fls_file_already_exist
+  ericsson_pmic1_fls_file_already_exist_directory_included: 'true'
+  ericsson_pmic1_fls_file_already_exist_dirmode: '2775'
+  ericsson_pmic1_fls_file_already_exist_filemode: '775'
+  ericsson_pmic1_fls_file_already_exist_g_u_bit: 'False'
+  ericsson_pmic1_fls_file_already_exist_gid: '206'
+  ericsson_pmic1_fls_file_already_exist_mount_path: /ericsson/pmic1
+  ericsson_pmic1_fls_file_already_exist_recurse_directories: 'false'
+  ericsson_pmic1_fls_file_already_exist_uid: '308'
+  ericsson_pmic1_fls_filemode: '775'
+  ericsson_pmic1_fls_g_u_bit: 'False'
+  ericsson_pmic1_fls_gid: '206'
+  ericsson_pmic1_fls_mount_path: /ericsson/pmic1
+  ericsson_pmic1_fls_recurse_directories: 'true'
+  ericsson_pmic1_fls_uid: '308'
+  ericsson_pmic1_tcimTopology_claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_tcimTopology_create_directories: /ericsson/pmic1/tcimTopology
+  ericsson_pmic1_tcimTopology_directory: /ericsson/pmic1/tcimTopology
+  ericsson_pmic1_tcimTopology_directory_included: 'true'
+  ericsson_pmic1_tcimTopology_dirmode: '2775'
+  ericsson_pmic1_tcimTopology_filemode: '660'
+  ericsson_pmic1_tcimTopology_g_u_bit: 'False'
+  ericsson_pmic1_tcimTopology_gid: '206'
+  ericsson_pmic1_tcimTopology_mount_path: /ericsson/pmic1
+  ericsson_pmic1_tcimTopology_recurse_directories: 'true'
+  ericsson_pmic1_tcimTopology_uid: '247207'
+  ericsson_pmic1_topology_claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_topology_create_directories: /ericsson/pmic1/topology,/ericsson/pmic1/topology/fls
+  ericsson_pmic1_topology_directory: /ericsson/pmic1/topology
+  ericsson_pmic1_topology_directory_included: 'true'
+  ericsson_pmic1_topology_dirmode: '2775'
+  ericsson_pmic1_topology_filemode: '660'
+  ericsson_pmic1_topology_g_u_bit: 'False'
+  ericsson_pmic1_topology_gid: '206'
+  ericsson_pmic1_topology_mount_path: /ericsson/pmic1
+  ericsson_pmic1_topology_recurse_directories: 'true'
+  ericsson_pmic1_topology_uid: '247207'
+  ericsson_pmic1_utran_claim_name: eric-enm-rwxpvc-pm1
+  ericsson_pmic1_utran_create_directories: /ericsson/pmic1/utran,/ericsson/pmic1/utran/topologyData,/ericsson/pmic1/utran/topologyData/RBS_Info
+  ericsson_pmic1_utran_directory: /ericsson/pmic1/utran
+  ericsson_pmic1_utran_directory_included: 'true'
+  ericsson_pmic1_utran_dirmode: '2775'
+  ericsson_pmic1_utran_filemode: '660'
+  ericsson_pmic1_utran_g_u_bit: 'False'
+  ericsson_pmic1_utran_gid: '206'
+  ericsson_pmic1_utran_mount_path: /ericsson/pmic1
+  ericsson_pmic1_utran_recurse_directories: 'true'
+  ericsson_pmic1_utran_uid: '247207'
+  ericsson_pmic2_bulkcm_claim_name: eric-enm-rwxpvc-pm2
+  ericsson_pmic2_bulkcm_create_directories: /ericsson/pmic2/bulkcm
+  ericsson_pmic2_bulkcm_directory: /ericsson/pmic2/bulkcm
+  ericsson_pmic2_bulkcm_directory_included: 'true'
+  ericsson_pmic2_bulkcm_dirmode: '2775'
+  ericsson_pmic2_bulkcm_filemode: '660'
+  ericsson_pmic2_bulkcm_g_u_bit: 'False'
+  ericsson_pmic2_bulkcm_gid: '206'
+  ericsson_pmic2_bulkcm_mount_path: /ericsson/pmic2
+  ericsson_pmic2_bulkcm_recurse_directories: 'true'
+  ericsson_pmic2_bulkcm_uid: '247207'
+  ericsson_pmic2_fls_claim_name: eric-enm-rwxpvc-pm2
+  ericsson_pmic2_fls_create_directories: /ericsson/pmic2/fls
+  ericsson_pmic2_fls_directory: /ericsson/pmic2/fls
+  ericsson_pmic2_fls_directory_included: 'true'
+  ericsson_pmic2_fls_dirmode: '2775'
+  ericsson_pmic2_fls_file_already_exist_claim_name: eric-enm-rwxpvc-pm2
+  ericsson_pmic2_fls_file_already_exist_create_directories: /ericsson/pmic2/fls_file_already_exist
+  ericsson_pmic2_fls_file_already_exist_directory: /ericsson/pmic2/fls_file_already_exist
+  ericsson_pmic2_fls_file_already_exist_directory_included: 'true'
+  ericsson_pmic2_fls_file_already_exist_dirmode: '2775'
+  ericsson_pmic2_fls_file_already_exist_filemode: '775'
+  ericsson_pmic2_fls_file_already_exist_g_u_bit: 'False'
+  ericsson_pmic2_fls_file_already_exist_gid: '206'
+  ericsson_pmic2_fls_file_already_exist_mount_path: /ericsson/pmic2
+  ericsson_pmic2_fls_file_already_exist_recurse_directories: 'false'
+  ericsson_pmic2_fls_file_already_exist_uid: '308'
+  ericsson_pmic2_fls_filemode: '775'
+  ericsson_pmic2_fls_g_u_bit: 'False'
+  ericsson_pmic2_fls_gid: '206'
+  ericsson_pmic2_fls_mount_path: /ericsson/pmic2
+  ericsson_pmic2_fls_recurse_directories: 'true'
+  ericsson_pmic2_fls_uid: '308'
+  ericsson_pmic2_tcimTopology_claim_name: eric-enm-rwxpvc-pm2
+  ericsson_pmic2_tcimTopology_create_directories: /ericsson/pmic2/tcimTopology
+  ericsson_pmic2_tcimTopology_directory: /ericsson/pmic2/tcimTopology
+  ericsson_pmic2_tcimTopology_directory_included: 'true'
+  ericsson_pmic2_tcimTopology_dirmode: '2775'
+  ericsson_pmic2_tcimTopology_filemode: '660'
+  ericsson_pmic2_tcimTopology_g_u_bit: 'False'
+  ericsson_pmic2_tcimTopology_gid: '206'
+  ericsson_pmic2_tcimTopology_mount_path: /ericsson/pmic2
+  ericsson_pmic2_tcimTopology_recurse_directories: 'true'
+  ericsson_pmic2_tcimTopology_uid: '247207'
+  ericsson_pmic2_topology_claim_name: eric-enm-rwxpvc-pm2
+  ericsson_pmic2_topology_create_directories: /ericsson/pmic2/topology,/ericsson/pmic2/topology/fls
+  ericsson_pmic2_topology_directory: /ericsson/pmic2/topology
+  ericsson_pmic2_topology_directory_included: 'true'
+  ericsson_pmic2_topology_dirmode: '2775'
+  ericsson_pmic2_topology_filemode: '660'
+  ericsson_pmic2_topology_g_u_bit: 'False'
+  ericsson_pmic2_topology_gid: '206'
+  ericsson_pmic2_topology_mount_path: /ericsson/pmic2
+  ericsson_pmic2_topology_recurse_directories: 'true'
+  ericsson_pmic2_topology_uid: '247207'
+  ericsson_pmic2_utran_claim_name: eric-enm-rwxpvc-pm2
+  ericsson_pmic2_utran_create_directories: /ericsson/pmic2/utran,/ericsson/pmic2/utran/topologyData,/ericsson/pmic2/utran/topologyData/RBS_Info
+  ericsson_pmic2_utran_directory: /ericsson/pmic2/utran
+  ericsson_pmic2_utran_directory_included: 'true'
+  ericsson_pmic2_utran_dirmode: '2775'
+  ericsson_pmic2_utran_filemode: '660'
+  ericsson_pmic2_utran_g_u_bit: 'False'
+  ericsson_pmic2_utran_gid: '206'
+  ericsson_pmic2_utran_mount_path: /ericsson/pmic2
+  ericsson_pmic2_utran_recurse_directories: 'true'
+  ericsson_pmic2_utran_uid: '247207'
+  ericsson_symvol_fnt_claim_name: eric-enm-rwxpvc-pmlinks
+  ericsson_symvol_fnt_create_directories: /ericsson/symvol/fnt
+  ericsson_symvol_fnt_directory: /ericsson/symvol/fnt
+  ericsson_symvol_fnt_directory_included: 'true'
+  ericsson_symvol_fnt_dirmode: '775'
+  ericsson_symvol_fnt_filemode: '775'
+  ericsson_symvol_fnt_g_u_bit: 'False'
+  ericsson_symvol_fnt_gid: '206'
+  ericsson_symvol_fnt_mount_path: /ericsson/symvol
+  ericsson_symvol_fnt_recurse_directories: 'true'
+  ericsson_symvol_fnt_uid: '308'
+  ericsson_tor_data_access_control_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_access_control_create_directories: /ericsson/tor/data/access_control
+  ericsson_tor_data_access_control_directory: /ericsson/tor/data/access_control
+  ericsson_tor_data_access_control_directory_included: 'true'
+  ericsson_tor_data_access_control_dirmode: '2775'
+  ericsson_tor_data_access_control_filemode: '664'
+  ericsson_tor_data_access_control_g_u_bit: 'False'
+  ericsson_tor_data_access_control_gid: '206'
+  ericsson_tor_data_access_control_mount_path: /ericsson/tor/data
+  ericsson_tor_data_access_control_recurse_directories: 'true'
+  ericsson_tor_data_access_control_uid: '295828'
+  ericsson_tor_data_apps_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_apps_create_directories: /ericsson/tor/data/apps
+  ericsson_tor_data_apps_directory: /ericsson/tor/data/apps
+  ericsson_tor_data_apps_directory_included: 'true'
+  ericsson_tor_data_apps_dirmode: '2775'
+  ericsson_tor_data_apps_filemode: '664'
+  ericsson_tor_data_apps_g_u_bit: 'False'
+  ericsson_tor_data_apps_gid: '206'
+  ericsson_tor_data_apps_mount_path: /ericsson/tor/data
+  ericsson_tor_data_apps_recurse_directories: 'true'
+  ericsson_tor_data_apps_uid: '308'
+  ericsson_tor_data_autoprovisioning_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_autoprovisioning_create_directories: /ericsson/tor/data/autoprovisioning
+  ericsson_tor_data_autoprovisioning_directory: /ericsson/tor/data/autoprovisioning
+  ericsson_tor_data_autoprovisioning_directory_included: 'true'
+  ericsson_tor_data_autoprovisioning_dirmode: '2775'
+  ericsson_tor_data_autoprovisioning_filemode: '775'
+  ericsson_tor_data_autoprovisioning_g_u_bit: 'False'
+  ericsson_tor_data_autoprovisioning_gid: '206'
+  ericsson_tor_data_autoprovisioning_mount_path: /ericsson/tor/data
+  ericsson_tor_data_autoprovisioning_name: json
+  ericsson_tor_data_autoprovisioning_permissions: '660'
+  ericsson_tor_data_autoprovisioning_recurse_directories: 'true'
+  ericsson_tor_data_autoprovisioning_uid: '217011'
+  ericsson_tor_data_cm_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_cm_create_directories: /ericsson/tor/data/cm
+  ericsson_tor_data_cm_directory: /ericsson/tor/data/cm
+  ericsson_tor_data_cm_directory_included: 'true'
+  ericsson_tor_data_cm_dirmode: '2775'
+  ericsson_tor_data_cm_events_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_cm_events_create_directories: /ericsson/tor/data/cm_events
+  ericsson_tor_data_cm_events_directory: /ericsson/tor/data/cm_events
+  ericsson_tor_data_cm_events_directory_included: 'true'
+  ericsson_tor_data_cm_events_dirmode: '2775'
+  ericsson_tor_data_cm_events_filemode: '660'
+  ericsson_tor_data_cm_events_g_u_bit: 'False'
+  ericsson_tor_data_cm_events_gid: '206'
+  ericsson_tor_data_cm_events_mount_path: /ericsson/tor/data
+  ericsson_tor_data_cm_events_name: json
+  ericsson_tor_data_cm_events_permissions: '660'
+  ericsson_tor_data_cm_events_recurse_directories: 'true'
+  ericsson_tor_data_cm_events_uid: '308'
+  ericsson_tor_data_cm_filemode: '775'
+  ericsson_tor_data_cm_g_u_bit: 'False'
+  ericsson_tor_data_cm_gid: '206'
+  ericsson_tor_data_cm_mount_path: /ericsson/tor/data
+  ericsson_tor_data_cm_name: json
+  ericsson_tor_data_cm_permissions: '660'
+  ericsson_tor_data_cm_recurse_directories: 'true'
+  ericsson_tor_data_cm_uid: '217011'
+  ericsson_tor_data_dictionary_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_dictionary_create_directories: /ericsson/tor/data/dictionary
+  ericsson_tor_data_dictionary_directory: /ericsson/tor/data/dictionary
+  ericsson_tor_data_dictionary_directory_included: 'true'
+  ericsson_tor_data_dictionary_dirmode: '2775'
+  ericsson_tor_data_dictionary_filemode: '664'
+  ericsson_tor_data_dictionary_g_u_bit: 'False'
+  ericsson_tor_data_dictionary_gid: '206'
+  ericsson_tor_data_dictionary_mount_path: /ericsson/tor/data
+  ericsson_tor_data_dictionary_name: txt
+  ericsson_tor_data_dictionary_permissions: '660'
+  ericsson_tor_data_dictionary_recurse_directories: 'true'
+  ericsson_tor_data_dictionary_uid: '295828'
+  ericsson_tor_data_domainProxy_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_domainProxy_create_directories: /ericsson/tor/data/domainProxy,/ericsson/tor/data/domainProxy/keystore,/ericsson/tor/data/domainProxy/truststore
+  ericsson_tor_data_domainProxy_directory: /ericsson/tor/data/domainProxy
+  ericsson_tor_data_domainProxy_directory_included: 'true'
+  ericsson_tor_data_domainProxy_dirmode: '2775'
+  ericsson_tor_data_domainProxy_filemode: '440'
+  ericsson_tor_data_domainProxy_g_u_bit: 'False'
+  ericsson_tor_data_domainProxy_gid: '206'
+  ericsson_tor_data_domainProxy_mount_path: /ericsson/tor/data
+  ericsson_tor_data_domainProxy_name: json
+  ericsson_tor_data_domainProxy_permissions: '440'
+  ericsson_tor_data_domainProxy_recurse_directories: 'true'
+  ericsson_tor_data_domainProxy_uid: '308'
+  ericsson_tor_data_file_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_file_create_directories: /ericsson/tor/data/file,/ericsson/tor/data/file/models,/ericsson/tor/data/file/models/ERBS,/ericsson/tor/data/file/models/MSRBS_V1,/ericsson/tor/data/file/models/SGSN-MME,/ericsson/tor/data/file/models/RadioNode
+  ericsson_tor_data_file_directory: /ericsson/tor/data/file
+  ericsson_tor_data_file_directory_included: 'true'
+  ericsson_tor_data_file_dirmode: '2775'
+  ericsson_tor_data_file_filemode: '664'
+  ericsson_tor_data_file_g_u_bit: 'False'
+  ericsson_tor_data_file_gid: '206'
+  ericsson_tor_data_file_mount_path: /ericsson/tor/data
+  ericsson_tor_data_file_name: xml
+  ericsson_tor_data_file_permissions: '664'
+  ericsson_tor_data_file_recurse_directories: 'true'
+  ericsson_tor_data_file_uid: '150497'
+  ericsson_tor_data_fm_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_fm_create_directories: /ericsson/tor/data/fm,/ericsson/tor/data/fm/axefmmediationengine,/ericsson/tor/data/fm/axefmmediationengine/data
+  ericsson_tor_data_fm_directory: /ericsson/tor/data/fm
+  ericsson_tor_data_fm_directory_included: 'true'
+  ericsson_tor_data_fm_dirmode: '2775'
+  ericsson_tor_data_fm_filemode: '775'
+  ericsson_tor_data_fm_g_u_bit: 'False'
+  ericsson_tor_data_fm_gid: '206'
+  ericsson_tor_data_fm_mount_path: /ericsson/tor/data
+  ericsson_tor_data_fm_name: xml
+  ericsson_tor_data_fm_permissions: '660'
+  ericsson_tor_data_fm_recurse_directories: 'true'
+  ericsson_tor_data_fm_uid: '233902'
+  ericsson_tor_data_fmx_claim_name: eric-enm-rwxpvc-fmx
+  ericsson_tor_data_fmx_create_directories: /ericsson/tor/data/fmx,/ericsson/tor/data/fmx/export,/ericsson/tor/data/fmx/modules,/ericsson/tor/data/fmx/moduleserver,/ericsson/tor/data/fmx/moduleserver/repos,/ericsson/tor/data/fmx/var,/ericsson/tor/data/fmx/var/modules,/ericsson/tor/data/fmx/etc,/ericsson/tor/data/fmx/etc/modules,/ericsson/tor/data/fmx/etc/enm_adapter,/ericsson/tor/data/fmx/log,/ericsson/tor/data/fmx/log/modules,/ericsson/tor/data/fmx/dat,/ericsson/tor/data/fmx/dat/modules,/ericsson/tor/data/fmx/sequences,/ericsson/tor/data/fmx/timeperiods
+  ericsson_tor_data_fmx_directory: /ericsson/tor/data/fmx
+  ericsson_tor_data_fmx_directory_included: 'true'
+  ericsson_tor_data_fmx_dirmode: '775'
+  ericsson_tor_data_fmx_filemode: '775'
+  ericsson_tor_data_fmx_g_u_bit: 'False'
+  ericsson_tor_data_fmx_gid: '210'
+  ericsson_tor_data_fmx_mount_path: /ericsson/tor/data/fmx/
+  ericsson_tor_data_fmx_recurse_directories: 'true'
+  ericsson_tor_data_fmx_uid: '210'
+  ericsson_tor_data_lcm_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_lcm_create_directories: /ericsson/tor/data/lcm
+  ericsson_tor_data_lcm_directory: /ericsson/tor/data/lcm
+  ericsson_tor_data_lcm_directory_included: 'true'
+  ericsson_tor_data_lcm_dirmode: '2775'
+  ericsson_tor_data_lcm_filemode: '660'
+  ericsson_tor_data_lcm_g_u_bit: 'False'
+  ericsson_tor_data_lcm_gid: '206'
+  ericsson_tor_data_lcm_mount_path: /ericsson/tor/data
+  ericsson_tor_data_lcm_name: json
+  ericsson_tor_data_lcm_permissions: '660'
+  ericsson_tor_data_lcm_recurse_directories: 'true'
+  ericsson_tor_data_lcm_uid: '274140'
+  ericsson_tor_data_mscm_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_mscm_directory: /ericsson/tor/data/mscm
+  ericsson_tor_data_mscm_directory_included: 'true'
+  ericsson_tor_data_mscm_dirmode: '2775'
+  ericsson_tor_data_mscm_filemode: '775'
+  ericsson_tor_data_mscm_g_u_bit: 'False'
+  ericsson_tor_data_mscm_gid: '206'
+  ericsson_tor_data_mscm_mount_path: /ericsson/tor/data
+  ericsson_tor_data_mscm_name: json
+  ericsson_tor_data_mscm_permissions: '660'
+  ericsson_tor_data_mscm_recurse_directories: 'true'
+  ericsson_tor_data_mscm_uid: '308'
+  ericsson_tor_data_mscmce_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_mscmce_create_directories: /ericsson/tor/data/mscmce
+  ericsson_tor_data_mscmce_directory: /ericsson/tor/data/mscmce
+  ericsson_tor_data_mscmce_directory_included: 'true'
+  ericsson_tor_data_mscmce_dirmode: '2775'
+  ericsson_tor_data_mscmce_filemode: '660'
+  ericsson_tor_data_mscmce_g_u_bit: 'False'
+  ericsson_tor_data_mscmce_gid: '206'
+  ericsson_tor_data_mscmce_mount_path: /ericsson/tor/data
+  ericsson_tor_data_mscmce_name: txt
+  ericsson_tor_data_mscmce_permissions: '660'
+  ericsson_tor_data_mscmce_recurse_directories: 'true'
+  ericsson_tor_data_mscmce_uid: '224792'
+  ericsson_tor_data_mscmip_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_mscmip_directory: /ericsson/tor/data/mscmip
+  ericsson_tor_data_mscmip_directory_included: 'true'
+  ericsson_tor_data_mscmip_dirmode: '2775'
+  ericsson_tor_data_mscmip_filemode: '775'
+  ericsson_tor_data_mscmip_g_u_bit: 'False'
+  ericsson_tor_data_mscmip_gid: '206'
+  ericsson_tor_data_mscmip_mount_path: /ericsson/tor/data
+  ericsson_tor_data_mscmip_name: json
+  ericsson_tor_data_mscmip_permissions: '660'
+  ericsson_tor_data_mscmip_recurse_directories: 'true'
+  ericsson_tor_data_mscmip_uid: '308'
+  ericsson_tor_data_nameservice_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_nameservice_create_directories: /ericsson/tor/data/nameservice
+  ericsson_tor_data_nameservice_directory: /ericsson/tor/data/nameservice
+  ericsson_tor_data_nameservice_directory_included: 'true'
+  ericsson_tor_data_nameservice_dirmode: '2775'
+  ericsson_tor_data_nameservice_filemode: '660'
+  ericsson_tor_data_nameservice_g_u_bit: 'False'
+  ericsson_tor_data_nameservice_gid: '206'
+  ericsson_tor_data_nameservice_mount_path: /ericsson/tor/data
+  ericsson_tor_data_nameservice_name: json
+  ericsson_tor_data_nameservice_permissions: '660'
+  ericsson_tor_data_nameservice_recurse_directories: 'true'
+  ericsson_tor_data_nameservice_uid: '308'
+  ericsson_tor_data_nbi_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_nbi_create_directories: /ericsson/tor/data/nbi,/ericsson/tor/data/nbi/fm,/ericsson/tor/data/nbi/fm/bnsi,/ericsson/tor/data/nbi/fm/conf,/ericsson/tor/data/nbi/fm/utils
+  ericsson_tor_data_nbi_directory: /ericsson/tor/data/nbi
+  ericsson_tor_data_nbi_directory_included: 'true'
+  ericsson_tor_data_nbi_dirmode: '2770'
+  ericsson_tor_data_nbi_filemode: '775'
+  ericsson_tor_data_nbi_g_u_bit: 'False'
+  ericsson_tor_data_nbi_gid: '206'
+  ericsson_tor_data_nbi_mount_path: /ericsson/tor/data/
+  ericsson_tor_data_nbi_name: properties
+  ericsson_tor_data_nbi_permissions: '775'
+  ericsson_tor_data_nbi_recurse_directories: 'true'
+  ericsson_tor_data_nbi_uid: '170817'
+  ericsson_tor_data_netlog_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_netlog_create_directories: /ericsson/tor/data/netlog
+  ericsson_tor_data_netlog_directory: /ericsson/tor/data/netlog
+  ericsson_tor_data_netlog_directory_included: 'true'
+  ericsson_tor_data_netlog_dirmode: '2775'
+  ericsson_tor_data_netlog_filemode: '660'
+  ericsson_tor_data_netlog_g_u_bit: 'False'
+  ericsson_tor_data_netlog_gid: '206'
+  ericsson_tor_data_netlog_mount_path: /ericsson/tor/data
+  ericsson_tor_data_netlog_name: json
+  ericsson_tor_data_netlog_permissions: '660'
+  ericsson_tor_data_netlog_recurse_directories: 'true'
+  ericsson_tor_data_netlog_uid: '233902'
+  ericsson_tor_data_nodecli_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_nodecli_create_directories: /ericsson/tor/data/nodecli,/ericsson/tor/data/nodecli/cmdlist,/ericsson/tor/data/nodecli/results
+  ericsson_tor_data_nodecli_directory: /ericsson/tor/data/nodecli
+  ericsson_tor_data_nodecli_directory_included: 'true'
+  ericsson_tor_data_nodecli_dirmode: '2775'
+  ericsson_tor_data_nodecli_filemode: '775'
+  ericsson_tor_data_nodecli_g_u_bit: 'False'
+  ericsson_tor_data_nodecli_gid: '206'
+  ericsson_tor_data_nodecli_mount_path: /ericsson/tor/data
+  ericsson_tor_data_nodecli_recurse_directories: 'true'
+  ericsson_tor_data_nodecli_uid: '200856'
+  ericsson_tor_data_pm_claim_name: eric-enm-rwxpvc-data
+  ericsson_tor_data_pm_create_directories: /ericsson/tor/data/pm
+  ericsson_tor_data_pm_directory: /ericsson/tor/data/pm
+  ericsson_tor_data_pm_directory_included: 'true'
+  ericsson_tor_data_pm_dirmode: '2775'
+  ericsson_tor_data_pm_filemode: '664'
+  ericsson_tor_data_pm_g_u_bit: 'False'
+  ericsson_tor_data_pm_gid: '206'
+  ericsson_tor_data_pm_mount_path: /ericsson/tor/data
+  ericsson_tor_data_pm_recurse_directories: 'true'
+  ericsson_tor_data_pm_uid: '275358'
+  ericsson_tor_no_rollback_fmexport_claim_name: eric-enm-rwxpvc-norollback
+  ericsson_tor_no_rollback_fmexport_create_directories: /ericsson/tor/no_rollback/fmexport,/ericsson/tor/no_rollback/fmexport/data
+  ericsson_tor_no_rollback_fmexport_directory: /ericsson/tor/no_rollback/fmexport
+  ericsson_tor_no_rollback_fmexport_directory_included: 'true'
+  ericsson_tor_no_rollback_fmexport_dirmode: '2775'
+  ericsson_tor_no_rollback_fmexport_filemode: '660'
+  ericsson_tor_no_rollback_fmexport_g_u_bit: 'False'
+  ericsson_tor_no_rollback_fmexport_gid: '206'
+  ericsson_tor_no_rollback_fmexport_mount_path: /ericsson/tor/no_rollback
+  ericsson_tor_no_rollback_fmexport_name: json
+  ericsson_tor_no_rollback_fmexport_permissions: '660'
+  ericsson_tor_no_rollback_fmexport_recurse_directories: 'true'
+  ericsson_tor_no_rollback_fmexport_uid: '233902'
+  id_id: fsmap_test
+  metadata_name: eric-enm-permissions-mgr
+  metadata_namespace: enm8139
+  nfsparameters_complete_run: 'False'
+  nfsparameters_default_dirmode: '2777'
+  nfsparameters_default_filemode: '7777'
+  nfsparameters_default_gid: '206'
+  nfsparameters_default_uid: '308'
+  nfsparameters_environment_type: XL
+  nfsparameters_g_u_bit: 'False'
+  nfsparameters_ignore_user: 'False'
+  nfsparameters_root_squash: 'False'
+  nfsparameters_run_as_non_root: 'True'
+  nfsparameters_setgid_bit: 'True'
+  nfsparameters_setuid_bit: 'False'
+  nfsparameters_sticky_bit: 'False'
+  properties_jboss_groupname: '206'
+  properties_jboss_username: '305'
+  properties_name: Ericsson
+  properties_url: http://www.ericsson.com
+permissionsMgrJob:
+  appname: permissions-mgr
+  containerPort: 8443
+  initContainerEnv:
+  - name: ASSIGNED_GID
+    value: '205'
+  - name: DIR_ONE
+    value: /ericsson/config_mgt
+  - name: run_as_non_root
+    value: 'True'
+  - name: init
+    value: 'True'
+  - name: image_tag
+    value: inapp_test9
+  - name: cpu_request
+    value: 500m
+  - name: memory_request
+    value: 512Mi
+  - name: ephemeral_storage_request
+    value: 400Mi
+  - name: cpu_limit
+    value: 1000m
+  - name: memory_limit
+    value: 1024Mi
+  - name: ephemeral_storage_limit
+    value: 500Mi
+  install_env:
+  - name: INSTALL
+    value: 'True'
+  - name: ASSIGNED_GID
+    value: '205'
+  - name: DIR_ONE
+    value: /ericsson/config_mgt
+  - name: run_as_non_root
+    value: 'True'
+  - name: image_tag
+    value: inapp_test9
+  - name: cpu_request
+    value: 500m
+  - name: memory_request
+    value: 512Mi
+  - name: ephemeral_storage_request
+    value: 400Mi
+  - name: cpu_limit
+    value: 1000m
+  - name: memory_limit
+    value: 1024Mi
+  - name: ephemeral_storage_limit
+    value: 500Mi
+  name: eric-enm-permissions-mgr
+  namespace: enm8139
+  restartPolicy: Never
+  schedulerName: default-scheduler
+  terminationMessagePath: /dev/termination-log
+  terminationMessagePolicy: File
+  upgrade_env:
+  - name: INSTALL
+    value: 'False'
+  - name: ASSIGNED_GID
+    value: '205'
+  - name: DIR_ONE
+    value: /ericsson/config_mgt
+  - name: run_as_non_root
+    value: 'True'
+  - name: fsmap_index
+    value: '1'
+  - name: image_tag
+    value: inapp_test9
+  - name: cpu_request
+    value: 500m
+  - name: memory_request
+    value: 512Mi
+  - name: ephemeral_storage_request
+    value: 400Mi
+  - name: cpu_limit
+    value: 2000m
+  - name: memory_limit
+    value: 2024Mi
+  - name: ephemeral_storage_limit
+    value: 500Mi
+  volumeMounts:
+  - mountPath: /ericsson/enm/dumps
+    name: hcdumps
+  - mountPath: /ericsson/autoprovisioning
+    name: autoprovisioning
+  - mountPath: /ericsson/symvol
+    name: pmlinks
+  - mountPath: /ericsson/netlog
+    name: netlog
+  - mountPath: /ericsson/tor/no_rollback
+    name: norollback
+  - mountPath: /ericsson/config_mgt
+    name: configmgt
+  - mountPath: /ericsson/tor/data
+    name: data
+  - mountPath: /ericsson/tor/data/fmx
+    name: fmx
+  - mountPath: /home/smrs
+    name: smrs
+  - mountPath: /ericsson/pmic1
+    name: pm1
+  - mountPath: /ericsson/pmic2
+    name: pm2
+  - mountPath: /ericsson/ul_spectrum_files/
+    name: pmul
+  - mountPath: /var/secrets
+    name: eric-enm-permissions-mgr-job-secret
+    readOnly: true
+  - mountPath: /var/configmaps2
+    name: eric-enm-permissions-mgr-filestore-secret
+    readOnly: true
+  - mountPath: /var/configmaps
+    name: eric-enm-permissions-mgr-configmap
+    readOnly: true
+  - mountPath: /etc/opt/ericsson/ERICmodeldeployment
+    name: mdt
+  - mountPath: /ericsson/configuration_management/UpgradeIndependence
+    name: upgind
+  - mountPath: /ericsson/batch
+    name: batch
+  - mountPath: /ericsson/enm/alarmfiles/alarmsync
+    name: alarmsync
+  - mountPath: /ericsson/jms
+    name: jms
+  - mountPath: /ericsson/georeplication
+    name: georep
+  - mountPath: /ericsson/enm/dlms/history/data
+    name: dlms
+  - mountPath: /ericsson/elect-export-path
+    name: exportpath
+  volumes:
+  - name: hcdumps
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-hcdumps
+  - name: autoprovisioning
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-autoprovisioning
+  - name: pmlinks
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-pmlinks
+  - name: netlog
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-netlog
+  - name: norollback
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-norollback
+  - name: configmgt
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-configmgt
+  - name: data
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-data
+  - name: fmx
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-fmx
+  - name: smrs
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-smrs
+  - name: pm1
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-pm1
+  - name: pm2
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-pm2
+  - name: pmul
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-pmul
+  - name: eric-enm-permissions-mgr-job-secret
+    secret:
+      defaultMode: 288
+      secretName: eric-enm-permissions-mgr-job-secret
+  - name: eric-enm-permissions-mgr-filestore-secret
+    secret:
+      defaultMode: 288
+      secretName: eric-enm-permissions-mgr-filestore-secret
+  - name: mdt
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-mdt
+  - name: upgind
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-upgind
+  - name: batch
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-batch
+  - name: alarmsync
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-alarmsync
+  - name: jms
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-jms
+  - name: georep
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-georep
+  - name: dlms
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-dlms
+  - name: exportpath
+    persistentVolumeClaim:
+      claimName: eric-enm-rwxpvc-elect
+  - configMap:
+      name: eric-enm-permissions-mgr-configmap
+    name: eric-enm-permissions-mgr-configmap
+podAnnotations: {}
+podDisruptionBudget:
+  maxUnavailable: 1
+podSecurityContext:
+  supplementalGroups:
+  - 0
+  - 206
+  - 210
+  - 5003
+  - 4999
+priorityClassName: ''
+productNumber: CXC 174 1911
+productRevision: R44A
+resources:
+  maincontainer:
+    limits:
+      cpu: 5000m
+      ephemeral-storage: 1012Mi
+      memory: 2024Mi
+    requests:
+      cpu: 500m
+      ephemeral-storage: 512Mi
+      memory: 512Mi
+    subcontainers:
+      eric-enm-permissions-mgr-task:
+        limits:
+          cpu: 1000m
+          ephemeral-storage: ''
+          memory: 2024Mi
+        maxNoOfJobsPerNode: 1
+        requests:
+          cpu: 500m
+          ephemeral-storage: ''
+          memory: 512Mi
+seccompProfile:
+  type: ''
+securityContext:
+  allowPrivilegeEscalation: true
+  readOnlyRootFilesystem: true
+terminationGracePeriodSeconds: 300
+tolerations: []
+ttlSecondsAfterFinished: 300
+updateStrategy:
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+  type: RollingUpdate

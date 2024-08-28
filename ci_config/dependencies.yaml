@@ -1,0 +1,7 @@
+modelVersion: '1.1'
+2pp_dependencies:
+  - name: Common Base OS
+    version: 6.17.0
+    abc_number: APR9010622
+    evms:
+      register: "yes"

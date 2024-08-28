@@ -1,0 +1,3 @@
+The permissions changer module is designed to give python the same speed of changing permissions as native C code for changing massive lists of directories.
+This is required due to some permissions change operations taking a long time eg 9-21 hours approx
+Pythons native chmod seems to not work with chown capabilities and calling subprocess.popen is slow unless only calling a single recursive command.

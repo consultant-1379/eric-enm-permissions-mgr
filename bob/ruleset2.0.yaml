@@ -1,0 +1,427 @@
+modelVersion: 2.0
+
+description: "ENM: eric-enm-permissions-mgr Pipeline"
+
+docker:
+  registry: https://armdocker.rnd.ericsson.se/proj-enm
+
+docker-images:
+  - adp-release-auto: armdocker.rnd.ericsson.se/sandbox/adp-staging/adp-cicd/bob-adp-release-auto:latest
+  - adp-helm-dr-check: armdocker.rnd.ericsson.se/sandbox/adp-staging/adp-cicd/common-library-adp-helm-dr-check:latest
+  - adp-release-cnbuild: armdocker.rnd.ericsson.se/proj_oss_releases/enm/adp-int-helm-chart-auto:latest
+  - eric-enm-version-auto: armdocker.rnd.ericsson.se/proj-enm/eric-enm-version-auto:1.1.1
+  - test-builder: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/bob-py3kubehelmbuilder:latest
+
+import:
+  common: common-properties.yaml
+
+properties:
+  - image-name: eric-enm-permissions-mgr
+  - image-repo: https://armdocker.rnd.ericsson.se/proj-enm
+  - docker-image-path: armdocker.rnd.ericsson.se/proj-enm/${image-name}
+  - docker-internal-image-path: armdocker.rnd.ericsson.se/proj_oss_releases/enm/${image-name}
+  - predeploy-helm-chart-name: eric-enm-permissions-mgr
+  - stateless-helm-chart-name: eric-enm-permissions-mgr-stateless
+  - helm-chart-repo: https://arm.epk.ericsson.se/artifactory/proj-enm-helm/eric-enm-permissions-mgr/
+  - helm-chart-stateless-repo: https://arm.epk.ericsson.se/artifactory/proj-enm-helm/eric-enm-permissions-mgr-stateless/
+  - apache-config-job-image: eric-enm-apache-config-pre-upgrade-job
+  - docker-apache-config-job-image-path: armdocker.rnd.ericsson.se/proj-enm/${apache-config-job-image}
+  - docker-apache-config-job-internal-image-path: armdocker.rnd.ericsson.se/proj-enm/${apache-config-job-image}
+  - testnamespace: test-permission-mgr
+
+# Analysis for skipping and disabling of design rules can be found at below confluence
+# https://confluence-oss.seli.wh.rnd.internal.ericsson.com/pages/viewpage.action?spaceKey=ECN&title=How+to+align+cENM+with+ADP+Design+Rules
+  - skipped-design-rules: "-DhelmDesignRule.config.DR-D1123-120=skip"
+  - disabled-design-rules: "-DhelmDesignRule.config.DR-D1121-120=disable
+                            -DhelmDesignRule.config.DR-D1121-121=disable
+                            -DhelmDesignRule.config.DR-D470204-045=disable
+                            -DhelmDesignRule.config.DR-D1121-064=disable
+                            -DhelmDesignRule.config.DR-D1124-100=disable
+                            -DhelmDesignRule.config.DR-D470218-006=disable"
+env:
+  - RELEASE (default=true)
+  - HELM_REPO_TOKEN
+  - ISO_VERSION (default=1.0.5555)
+  - BUILD_DATE (default = $(date +%d%m%Y-%H%M%S --utc))
+  - AUTHOR_NAME
+  - AUTHOR_EMAIL
+  - GIT_COMMITTER_NAME
+  - GIT_COMMITTER_EMAIL
+  - ENABLE_HELM_V3 (default=true)
+  - KUBECONFIG (default=/tmp/kube.admin.conf)
+  - IMAGE_REPO
+  - IMAGE_NAME
+  - IMAGE_TAG
+  - PWD
+
+var:
+  - commit-hash
+  - version
+  - version-prefix
+  - rstate
+  - jobName
+  - temp-meta-var
+
+rules:
+  swap-latest-versions-with-numbers:
+    - task: swap_versions
+      docker-image: eric-enm-version-auto
+      docker-flags:
+        - "--env-file enm_artifact.properties"
+      cmd: python /substitute_values.py
+
+  generate-new-version:
+    - task: generate-version
+      docker-image: adp-release-auto
+      cmd: generate-version -f VERSION_PREFIX --is-release ${env.RELEASE} --output version
+    - task: set-version-prefix
+      cmd: cat VERSION_PREFIX > .bob/var.version-prefix
+    - task: generate-rstate
+      docker-image: adp-release-auto
+      cmd: get_rstate.py ${var.version} > .bob/var.rstate
+    - task: get-commit-hash
+      docker-image: adp-release-auto
+      cmd: git rev-parse --short HEAD > .bob/var.commit-hash
+
+  test-3pp-tools:
+    - task: test-helm
+      docker-image: test-builder
+      cmd: helm version -c
+    - task: test-kubectl
+      docker-image: test-builder
+      cmd: kubectl version --client
+
+  test-deployment:
+    - task: setup-env # Creating new namespace and creating the PVC's
+      docker-image: test-builder
+      docker-flags:
+        - "--env KUBECONFIG=/tmp/kube.admin.conf"
+        - "--volume ${env.KUBECONFIG}:/tmp/kube.admin.conf:ro"
+        - "--volume ${env.PWD}:${env.PWD}"
+      cmd:
+        - chmod 550 deploymentTest/cleanup.sh
+        - bash deploymentTest/cleanup.sh ${testnamespace}
+        - chmod 550 deploymentTest/pvc_creation.sh
+        - bash deploymentTest/pvc_creation.sh ${testnamespace}
+        - kubectl get pvc -n ${testnamespace}
+    - task: test-permission-mgr-before-deploy # Validating the permissions before permission-mgr deployment to show dirs doesnt exists
+      docker-image: test-builder
+      docker-flags:
+        - "--env KUBECONFIG=/tmp/kube.admin.conf"
+        - "--volume ${env.KUBECONFIG}:/tmp/kube.admin.conf:ro"
+        - "--volume ${env.PWD}:${env.PWD}"
+        - "--network host"
+      cmd:
+        - kubectl create configmap dir-validation --from-file=dir_validation_script.sh=deploymentTest/check_dir_permissions.sh -n ${testnamespace}
+        - kubectl apply -f deploymentTest/JobToCheckDirPermissions.yaml -n ${testnamespace}
+        - kubectl get job -n ${testnamespace} -o=jsonpath='{.items[*].metadata.name}' > .bob/var.jobName
+        - sleep 10s
+        - kubectl logs -n ${testnamespace} job/${var.jobName}
+        - kubectl delete job/${var.jobName} -n ${testnamespace}
+    - task: deploy-permissions-mgr # Deploying eric-enm-permissions-mgr chart
+      docker-image: test-builder
+      docker-flags:
+        - "--env KUBECONFIG=/tmp/kube.admin.conf"
+        - "--volume ${env.KUBECONFIG}:/tmp/kube.admin.conf:ro"
+        - "--volume ${env.PWD}:${env.PWD}"
+      cmd:
+        - /usr/share/helm/3.x/helm install ${predeploy-helm-chart-name} --values deploymentTest/testValues.yaml --set images.eric-enm-permissions-mgr.tag=${var.version} .bob/${predeploy-helm-chart-name}-${var.version}.tgz --namespace=${testnamespace} --wait --timeout=180s
+        - echo "Installed ${predeploy-helm-chart-name}"
+        - /usr/share/helm/3.x/helm ls -n ${testnamespace}
+    - task: test-permission-mgr # Validating permissions of directories by creating a Job
+      docker-image: test-builder
+      docker-flags:
+        - "--env KUBECONFIG=/tmp/kube.admin.conf"
+        - "--volume ${env.KUBECONFIG}:/tmp/kube.admin.conf:ro"
+        - "--volume ${env.PWD}:${env.PWD}"
+        - "--network host"
+      cmd:
+        - kubectl apply -f deploymentTest/JobToCheckDirPermissions.yaml -n ${testnamespace}
+        - kubectl get job -n ${testnamespace} -o=jsonpath='{.items[*].metadata.name}' > .bob/var.jobName
+        - sleep 10s
+        - kubectl logs -n ${testnamespace} job/${var.jobName}
+        - kubectl get jobs -n ${testnamespace}
+        - kubectl get jobs -n ${testnamespace} | awk 'NR>1 {print $2}' | grep '0/1' && exit 1 || true
+
+  cleanup-namespace:
+    - task: clean-up # Deleting the namespace
+      docker-image: test-builder
+      docker-flags:
+        - "--env KUBECONFIG=/tmp/kube.admin.conf"
+        - "--volume ${env.KUBECONFIG}:/tmp/kube.admin.conf:ro"
+        - "--volume ${env.PWD}:${env.PWD}"
+      cmd:
+        - kubectl delete ns ${testnamespace}
+
+
+  build-image:
+    - task: build-docker-image
+      cmd:
+        - docker build ${env.PWD}
+          --file Dockerfile
+          --build-arg OS_BASE_IMAGE_REPO=${common.image-base-os-repo}
+          --build-arg OS_BASE_IMAGE_NAME=${common.image-base-os-name}
+          --build-arg OS_BASE_IMAGE_TAG=${common.image-base-os-version}
+          --build-arg GIT_COMMIT=${var.commit-hash} --build-arg BUILD_DATE=${env.BUILD_DATE}
+          --build-arg IMAGE_BUILD_VERSION=${var.version} --build-arg RSTATE=${var.rstate}
+          --build-arg ISO_VERSION=${env.ISO_VERSION} --tag ${docker-image-path}:${var.version}
+        - docker build eric-enm-apache-config-pre-upgrade-job
+          --build-arg GIT_COMMIT=${var.commit-hash}
+          --build-arg BUILD_DATE=${env.BUILD_DATE}
+          --build-arg IMAGE_BUILD_VERSION=${var.version}
+          --build-arg RSTATE=${var.rstate}
+          --build-arg ISO_VERSION=${env.ISO_VERSION}
+          --tag ${docker-apache-config-job-image-path}:${var.version}
+
+  build-image-with-all-tags:
+    - task: build-docker-image-with-tags
+      cmd:
+        - docker build ${env.PWD}
+          --file Dockerfile
+          --build-arg OS_BASE_IMAGE_REPO=${common.image-base-os-repo}
+          --build-arg OS_BASE_IMAGE_NAME=${common.image-base-os-name}
+          --build-arg OS_BASE_IMAGE_TAG=${common.image-base-os-version}
+          --build-arg GIT_COMMIT=${var.commit-hash}
+          --build-arg BUILD_DATE=${env.BUILD_DATE}
+          --build-arg IMAGE_BUILD_VERSION=${var.version}
+          --build-arg RSTATE=${var.rstate}
+          --build-arg ISO_VERSION=${env.ISO_VERSION}
+          --tag ${docker-image-path}:${var.version}
+        - docker image tag ${docker-image-path}:${var.version} ${docker-image-path}:${var.version-prefix}-latest
+        - docker image tag ${docker-image-path}:${var.version} ${docker-image-path}:latest
+        - docker build eric-enm-apache-config-pre-upgrade-job --build-arg GIT_COMMIT=${var.commit-hash} --build-arg BUILD_DATE=${env.BUILD_DATE} --build-arg IMAGE_BUILD_VERSION=${var.version} --build-arg RSTATE=${var.rstate} --build-arg ISO_VERSION=${env.ISO_VERSION} --tag ${docker-apache-config-job-image-path}:${var.version}
+        - docker image tag ${docker-apache-config-job-image-path}:${var.version} ${docker-apache-config-job-image-path}:${var.version-prefix}-latest
+        - docker image tag ${docker-apache-config-job-image-path}:${var.version} ${docker-apache-config-job-image-path}:latest
+
+  push-image:
+    - task: push-docker-image
+      cmd:
+        - docker push ${docker-image-path}:${var.version}
+        - docker push ${docker-apache-config-job-image-path}:${var.version}
+
+  push-image-with-all-tags:
+    - task: push-docker-image
+      cmd:
+        - docker push ${docker-image-path}:${var.version}
+        - docker push ${docker-image-path}:${var.version-prefix}-latest
+        - docker push ${docker-image-path}:latest
+        - docker push ${docker-apache-config-job-image-path}:${var.version}
+        - docker push ${docker-apache-config-job-image-path}:${var.version-prefix}-latest
+        - docker push ${docker-apache-config-job-image-path}:latest
+
+  remove-image:
+    - task: remove-docker-image
+      cmd:
+        - docker image remove ${docker-image-path}:${var.version}
+        - docker push ${docker-apache-config-job-image-path}:${var.version}
+
+  remove-image-with-all-tags:
+    - task: remove-docker-image-with-tags
+      cmd:
+        - docker image remove ${docker-image-path}:${var.version}
+        - docker image remove ${docker-image-path}:${var.version-prefix}-latest
+        - docker image remove ${docker-image-path}:latest
+        - docker push ${docker-apache-config-job-image-path}:${var.version}
+        - docker push ${docker-apache-config-job-image-path}:${var.version-prefix}-latest
+        - docker push ${docker-apache-config-job-image-path}:latest
+
+  build-image-internal:
+    - task: build-docker-image
+      cmd:
+        - docker build ${env.PWD}
+          --file Dockerfile
+          --build-arg OS_BASE_IMAGE_REPO=${common.image-base-os-repo}
+          --build-arg OS_BASE_IMAGE_NAME=${common.image-base-os-name}
+          --build-arg OS_BASE_IMAGE_TAG=${common.image-base-os-version}
+          --build-arg GIT_COMMIT=${var.commit-hash}
+          --build-arg BUILD_DATE=${env.BUILD_DATE}
+          --build-arg IMAGE_BUILD_VERSION=${var.version}
+          --build-arg RSTATE=${var.rstate}
+          --build-arg ISO_VERSION=${env.ISO_VERSION}
+          --tag ${docker-internal-image-path}:${var.version}
+        - docker build eric-enm-apache-config-pre-upgrade-job --build-arg GIT_COMMIT=${var.commit-hash} --build-arg BUILD_DATE=${env.BUILD_DATE} --build-arg IMAGE_BUILD_VERSION=${var.version} --build-arg RSTATE=${var.rstate} --build-arg ISO_VERSION=${env.ISO_VERSION} --tag ${docker-apache-config-job-internal-image-path}:${var.version}
+
+  build-image-with-all-tags-internal:
+    - task: build-docker-image-with-tags
+      cmd:
+        - docker build ${env.PWD}
+          --file Dockerfile
+          --build-arg OS_BASE_IMAGE_REPO=${common.image-base-os-repo}
+          --build-arg OS_BASE_IMAGE_NAME=${common.image-base-os-name}
+          --build-arg OS_BASE_IMAGE_TAG=${common.image-base-os-version}
+          --build-arg GIT_COMMIT=${var.commit-hash}
+          --build-arg BUILD_DATE=${env.BUILD_DATE}
+          --build-arg IMAGE_BUILD_VERSION=${var.version}
+          --build-arg RSTATE=${var.rstate}
+          --build-arg ISO_VERSION=${env.ISO_VERSION}
+          --tag ${docker-internal-image-path}:${var.version}
+        - docker image tag ${docker-internal-image-path}:${var.version} ${docker-internal-image-path}:${var.version-prefix}-latest
+        - docker image tag ${docker-internal-image-path}:${var.version} ${docker-internal-image-path}:latest
+        - docker build eric-enm-apache-config-pre-upgrade-job --build-arg GIT_COMMIT=${var.commit-hash} --build-arg BUILD_DATE=${env.BUILD_DATE} --build-arg IMAGE_BUILD_VERSION=${var.version} --build-arg RSTATE=${var.rstate} --build-arg ISO_VERSION=${env.ISO_VERSION} --tag ${docker-apache-config-job-internal-image-path}:${var.version}
+        - docker image tag ${docker-internal-image-path}:${var.version} ${docker-apache-config-job-internal-image-path}:${var.version-prefix}-latest
+        - docker image tag ${docker-internal-image-path}:${var.version} ${docker-apache-config-job-internal-image-path}:latest
+
+  push-image-with-all-tags-internal:
+    - task: push-docker-image
+      cmd:
+        - docker push ${docker-internal-image-path}:${var.version}
+        - docker push ${docker-internal-image-path}:${var.version-prefix}-latest
+        - docker push ${docker-internal-image-path}:latest
+        - docker push ${docker-apache-config-job-internal-image-path}:${var.version}
+        - docker push ${docker-apache-config-job-internal-image-path}:${var.version-prefix}-latest
+        - docker push ${docker-apache-config-job-internal-image-path}:latest
+
+  remove-image-internal:
+    - task: remove-docker-image
+      cmd:
+        - docker image remove ${docker-internal-image-path}:${var.version}
+        - docker image remove ${docker-apache-config-job-internal-image-path}:${var.version}
+
+  remove-image-with-all-tags-internal:
+    - task: remove-docker-image-with-tags
+      cmd:
+        - docker image remove ${docker-internal-image-path}:${var.version}
+        - docker image remove ${docker-internal-image-path}:${var.version-prefix}-latest
+        - docker image remove ${docker-internal-image-path}:latest
+        - docker image remove ${docker-apache-config-job-internal-image-path}:${var.version}
+        - docker image remove ${docker-apache-config-job-internal-image-path}:${var.version-prefix}-latest
+        - docker image remove ${docker-apache-config-job-internal-image-path}:latest
+
+  helm-dep-up-predeploy:
+  - task: helm-dep-up
+    docker-flags:
+      - "--env ENABLE_HELM_V3=${env.ENABLE_HELM_V3}"
+    docker-image: adp-release-auto
+    cmd: helm dep up chart/${predeploy-helm-chart-name}
+
+  lint-helm-predeploy:
+    - task: helm-lint
+      docker-flags:
+        - "--env ENABLE_HELM_V3=${env.ENABLE_HELM_V3}"
+      docker-image: adp-release-auto
+      cmd: helm lint chart/${predeploy-helm-chart-name}
+
+  test-helm-predeploy:
+    - task: helm-chart-check
+      docker-image: adp-helm-dr-check
+      cmd: java -DhelmDesignRule.feature.dependency=1 ${disabled-design-rules} ${skipped-design-rules} -jar /helm-dr-check.jar --helm-chart chart/${predeploy-helm-chart-name} -c
+
+  build-helm-predeploy:
+    - task: helm-package
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env ENABLE_HELM_V3=${env.ENABLE_HELM_V3}"
+      cmd: helm-package --folder chart/${predeploy-helm-chart-name} --version ${var.version} --replace VERSION=${var.version} --replace RSTATE=${var.rstate} --replace eric-product-info.yaml:VERSION=${var.version}
+
+  push-helm-predeploy:
+    - task: helm-push
+      docker-image: adp-release-auto
+      cmd: upload_file.sh --filename=.bob/${predeploy-helm-chart-name}-${var.version}.tgz --repository=${helm-chart-repo} --api-token=${env.HELM_REPO_TOKEN}
+
+  generate-output-parameters-predeploy:
+    - task: generate-version
+      docker-image: adp-release-auto
+      cmd: generate-adp-artifacts --chart-name ${predeploy-helm-chart-name} --chart-repo ${helm-chart-repo} --chart-version ${var.version} --image-repo ${image-repo} --image-name ${image-name} --image-version ${var.version}
+
+  generate-metadata-parameters-predeploy:
+    - task: generate-metadata-version
+      docker-image: adp-release-cnbuild
+      cmd: generate-metadata-artifacts --dockerfile bob/MetadataValuesDocker --chart-name ${predeploy-helm-chart-name} --chart-repo ${helm-chart-repo} --chart-version ${var.version} --image-path ${image-repo} --image-name ${image-name} --image-tag ${var.version} --iso-version ${env.ISO_VERSION}
+
+  generate-output-parameters-internal-stage-predeploy:
+    - task: generate-version-internal
+      docker-image: adp-release-auto
+      cmd: generate-adp-artifacts --chart-name ${predeploy-helm-chart-name} --chart-repo ${helm-chart-repo} --chart-version ${var.version} --image-repo ${docker-internal-image-path} --image-name ${image-name} --image-version ${var.version}
+
+  helm-dep-up-stateless:
+  - task: helm-dep-up
+    docker-flags:
+      - "--env ENABLE_HELM_V3=${env.ENABLE_HELM_V3}"
+    docker-image: adp-release-auto
+    cmd: helm dep up chart/${stateless-helm-chart-name}
+
+  lint-helm-stateless:
+    - task: helm-lint
+      docker-flags:
+        - "--env ENABLE_HELM_V3=${env.ENABLE_HELM_V3}"
+      docker-image: adp-release-auto
+      cmd: helm lint chart/${stateless-helm-chart-name}
+
+  test-helm-stateless:
+    - task: helm-chart-check
+      docker-image: adp-helm-dr-check
+      cmd: java -DhelmDesignRule.feature.dependency=1 ${disabled-design-rules} ${skipped-design-rules} -jar /helm-dr-check.jar --helm-chart chart/${stateless-helm-chart-name} -c
+
+  build-helm-stateless:
+    - task: helm-package
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env ENABLE_HELM_V3=${env.ENABLE_HELM_V3}"
+      cmd: helm-package --folder chart/${stateless-helm-chart-name} --version ${var.version} --replace VERSION=${var.version} --replace RSTATE=${var.rstate} --replace eric-product-info.yaml:VERSION=${var.version}
+
+  push-helm-stateless:
+    - task: helm-push
+      docker-image: adp-release-auto
+      cmd: upload_file.sh --filename=.bob/${stateless-helm-chart-name}-${var.version}.tgz --repository=${helm-chart-stateless-repo} --api-token=${env.HELM_REPO_TOKEN}
+
+  generate-output-parameters-stateless:
+    - task: generate-version
+      docker-image: adp-release-auto
+      cmd: generate-adp-artifacts --chart-name ${stateless-helm-chart-name} --chart-repo ${helm-chart-stateless-repo} --chart-version ${var.version} --image-repo ${image-repo} --image-name ${image-name} --image-version ${var.version}
+
+  generate-metadata-parameters-stateless:
+    - task: generate-metadata-version
+      docker-image: adp-release-cnbuild
+      cmd: generate-metadata-artifacts --dockerfile bob/MetadataValuesDocker --chart-name ${stateless-helm-chart-name} --chart-repo ${helm-chart-stateless-repo} --chart-version ${var.version} --image-path ${image-repo} --image-name ${image-name} --image-tag ${var.version} --iso-version ${env.ISO_VERSION}
+
+  generate-output-parameters-internal-stage-stateless:
+    - task: generate-version-internal
+      docker-image: adp-release-auto
+      cmd: generate-adp-artifacts --chart-name ${stateless-helm-chart-name} --chart-repo ${helm-chart-stateless-repo} --chart-version ${var.version} --image-repo ${docker-internal-image-path} --image-name ${image-name} --image-version ${var.version}
+
+  lint-dockerfile:
+    - task: dockerfile-lint
+      cmd:
+        - docker run --rm -i hadolint/hadolint < Dockerfile | tee ./dockerfilelint.log
+        - docker run --rm -i hadolint/hadolint < eric-enm-apache-config-pre-upgrade-job/Dockerfile | tee ./dockerfilelint.log
+
+  create-git-tag:
+    - task: create-git-tag
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env GIT_COMMITTER_NAME='${env.GIT_COMMITTER_NAME}'"
+        - "--env GIT_COMMITTER_EMAIL='${env.GIT_COMMITTER_EMAIL}'"
+      cmd: git tag --annotate ${var.version} --message "Build Version ${var.version} by ${env.AUTHOR_NAME} <${env.AUTHOR_EMAIL}>"
+
+  remove-git-tag:
+    - task: remove-git-tag
+      docker-image: adp-release-auto
+      cmd: git tag --delete ${var.version}
+
+  create-new-cbo-patch:
+    - task: create-new-cbo-patch
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env GERRIT_USERNAME"
+        - "--env GERRIT_PASSWORD"
+        - "--network host"
+      cmd:
+        - "sed -i 's~image-base-os-repo: .*~image-base-os-repo: ${env.IMAGE_REPO}~' bob/common-properties.yaml"
+        - "sed -i 's/image-base-os-name: .*/image-base-os-name: ${env.IMAGE_NAME}/' bob/common-properties.yaml"
+        - "sed -i 's/image-base-os-version: .*/image-base-os-version: ${env.IMAGE_TAG}/' bob/common-properties.yaml"
+        - echo ${env.IMAGE_NAME} > .bob/var.temp-meta-var
+        - "sed -i 's/ARG OS_BASE_IMAGE_NAME=.*/ARG OS_BASE_IMAGE_NAME=${var.temp-meta-var}/' bob/MetadataValuesDocker"
+        - echo ${env.IMAGE_REPO} > .bob/var.temp-meta-var
+        - "sed -i 's~ARG OS_BASE_IMAGE_REPO=.*~ARG OS_BASE_IMAGE_REPO=${var.temp-meta-var}~' bob/MetadataValuesDocker"
+        - echo ${env.IMAGE_TAG} > .bob/var.temp-meta-var
+        - "sed -i 's/ARG OS_BASE_IMAGE_TAG=.*/ARG OS_BASE_IMAGE_TAG=${var.temp-meta-var}/' bob/MetadataValuesDocker"
+        - config-handler update
+          --set-cbo-version ${env.IMAGE_TAG}
+          --dependencies-file ci_config/dependencies.yaml
+          --debug
+        - gerrit create-patch
+          --file bob/common-properties.yaml ci_config/dependencies.yaml bob/MetadataValuesDocker
+          --message "NO JIRA Update Common Base OS to ${env.IMAGE_TAG}"
+          --git-repo-local .
+          --wait-label "Verified"="+1"
+          --debug

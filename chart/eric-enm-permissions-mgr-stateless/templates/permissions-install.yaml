@@ -1,0 +1,173 @@
+{{- define "eric-enm-permissions-mgr.kubernetes-io" }}
+  kubernetes.io/egress-bandwidth: {{ .Values.bandwidth.maxEgressRate }}
+{{- end }}
+{{- define "eric-enm-permissions-mgr.adpbrlabelkey" }}
+  adpbrlabelkey: {{ include "eric-enm-permissions-mgr.name" . | quote }}
+{{- end }}
+{{- define "eric-enm-permissions-mgr.backupType" }}
+  backupType: {{- range $i, $e := .Values.brAgent.backupTypeList -}}
+              {{- if eq $i 0 -}}{{- printf " " -}}{{- else -}};{{- end -}}{{- . -}}
+              {{- end }}
+{{- end }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "eric-enm-permissions-mgr.name" . }}-job
+  labels: {{- include "eric-enm-permissions-mgr.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  {{- if .Values.bandwidth.maxEgressRate }}
+    {{- $annotations := include "eric-enm-permissions-mgr.annotations" . | fromYaml -}}
+    {{- $kubernetes := include "eric-enm-permissions-mgr.kubernetes-io" . | fromYaml -}}
+    {{- include "eric-enm-permissions-mgr.mergeAnnotations" (dict "location" .Template.Name "sources" (list $annotations $kubernetes)) | nindent 4 }}
+  {{- else }}
+    {{- include "eric-enm-permissions-mgr.annotations" . | nindent 4 }}
+  {{- end }}
+spec:
+  activeDeadlineSeconds: 2400
+  template:
+    metadata:
+      labels:
+      {{- if and .Values.brAgent (eq .Values.brAgent.enabled true) }}
+        {{- $labels := include "eric-enm-permissions-mgr.labels" . | fromYaml -}}
+        {{- $adpbrlabelkey := include "eric-enm-permissions-mgr.adpbrlabelkey" . | fromYaml -}}
+        {{- include "eric-enm-permissions-mgr.mergeLabels" (dict "location" .Template.Name "sources" (list $labels $adpbrlabelkey)) | nindent 8 }}
+      {{- else}}
+        {{- include "eric-enm-permissions-mgr.labels" . | nindent 8 }}
+      {{- end }}
+      annotations:
+      {{- if and .Values.brAgent (eq .Values.brAgent.enabled true) }}
+        {{- if .Values.brAgent.backupTypeList -}}
+          {{- $annotations := include "eric-enm-permissions-mgr.annotations" . | fromYaml -}}
+          {{- $backupType := include "eric-enm-permissions-mgr.backupType" . | fromYaml -}}
+          {{- include "eric-enm-permissions-mgr.mergeAnnotations" (dict "location" .Template.Name "sources" (list $annotations $backupType)) | nindent 8 }}
+      {{- end }}
+      {{- else }}
+        {{- include "eric-enm-permissions-mgr.annotations" . | nindent 8 }}
+      {{- end }}
+    spec:
+{{- if or .Values.nodeSelector .Values.global.nodeSelector }}
+      nodeSelector:
+{{- if .Values.nodeSelector }}
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+{{- if .Values.global.nodeSelector }}
+{{ toYaml .Values.global.nodeSelector | indent 8 }}
+{{- end }}
+{{- end }} 
+      containers:
+      - env:
+        - name: pullSecret
+          value: {{ template "eric-enm-permissions-mgr.pullSecrets" . }}
+        - name: image
+          value:  {{ template "eric-enm-permissions-mgr.mainImagePath" . }}
+        {{- if .Values.global }}
+        {{- if .Values.global.timezone }}
+        - name: TZ
+          value: {{ .Values.global.timezone | quote }}
+        {{- end }}
+        {{- end }}
+{{ toYaml .Values.permissionsMgrJob.install_env | indent 8 }}
+        name: {{ template "eric-enm-permissions-mgr.name" . }}-job
+        image: {{ template "eric-enm-permissions-mgr.mainImagePath" . }}
+        ports:
+        - containerPort: {{ .Values.permissionsMgrJob.containerPort }}
+        imagePullPolicy: {{ template "eric-enm-permissions-mgr.registryImagePullPolicy" . }}
+        resources:
+            requests:
+            {{- if .Values.resources.maincontainer.requests.cpu }}
+              cpu: {{ .Values.resources.maincontainer.requests.cpu | quote }}
+            {{- end }}
+            {{- if .Values.resources.maincontainer.requests.memory }}
+              memory: {{ .Values.resources.maincontainer.requests.memory | quote }}
+            {{- end }}
+            {{- if (index .Values "resources" "maincontainer" "requests" "ephemeral-storage") }}
+              ephemeral-storage: {{ (index .Values "resources" "maincontainer" "requests" "ephemeral-storage") | quote }}
+            {{- end }}
+            limits:
+            {{- if .Values.resources.maincontainer.limits.cpu }}
+              cpu: {{ .Values.resources.maincontainer.limits.cpu | quote }}
+            {{- end }}
+            {{- if .Values.resources.maincontainer.limits.memory }}
+              memory: {{ .Values.resources.maincontainer.limits.memory | quote }}
+            {{- end }}
+            {{- if (index .Values "resources" "maincontainer" "limits" "ephemeral-storage") }}
+              ephemeral-storage: {{ (index .Values "resources" "maincontainer" "limits" "ephemeral-storage") | quote }}
+            {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: {{ include "eric-enm-permissions-mgr.allowPrivilegeEscalation" . }}
+          runAsUser: {{ .Values.securityContext.runAsUser }}
+          runAsGroup: {{ .Values.securityContext.runAsGroup }}
+          readOnlyRootFilesystem: {{ .Values.securityContext.readOnlyRootFilesystem }}
+          capabilities:
+            drop:
+            - ALL
+            {{- if not .Values.permissionMgrConfigs.root_squash }}
+            add:
+            - CHOWN
+            {{- end }}
+        terminationMessagePath: {{ .Values.permissionsMgrJob.terminationMessagePath }}
+        terminationMessagePolicy: {{ .Values.permissionsMgrJob.terminationMessagePolicy }}
+        volumeMounts:
+{{ toYaml .Values.permissionsMgrJob.volumeMounts | indent 8 }}
+      initContainers:
+      - env:
+        {{- if .Values.global }}
+        {{- if .Values.global.timezone }}
+        - name: TZ
+          value: {{ .Values.global.timezone | quote }}
+        {{- end }}
+        {{- end }}
+{{ toYaml .Values.permissionsMgrJob.initContainerEnv | indent 8 }}
+        name: {{ template "eric-enm-permissions-mgr.name" . }}-job-init
+        image: {{ template "eric-enm-permissions-mgr.mainImagePath" . }}
+        imagePullPolicy: {{ template "eric-enm-permissions-mgr.registryImagePullPolicy" . }}
+        resources:
+            requests:
+            {{- if .Values.resources.maincontainer.requests.cpu }}
+              cpu: {{ .Values.resources.maincontainer.requests.cpu | quote }}
+            {{- end }}
+            {{- if .Values.resources.maincontainer.requests.memory }}
+              memory: {{ .Values.resources.maincontainer.requests.memory | quote }}
+            {{- end }}
+            {{- if (index .Values "resources" "maincontainer" "requests" "ephemeral-storage") }}
+              ephemeral-storage: {{ (index .Values "resources" "maincontainer" "requests" "ephemeral-storage") | quote }}
+            {{- end }}
+            limits:
+            {{- if .Values.resources.maincontainer.limits.cpu }}
+              cpu: {{ .Values.resources.maincontainer.limits.cpu | quote }}
+            {{- end }}
+            {{- if .Values.resources.maincontainer.limits.memory }}
+              memory: {{ .Values.resources.maincontainer.limits.memory | quote }}
+            {{- end }}
+            {{- if (index .Values "resources" "maincontainer" "limits" "ephemeral-storage") }}
+              ephemeral-storage: {{ (index .Values "resources" "maincontainer" "limits" "ephemeral-storage") | quote }}
+            {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: {{ include "eric-enm-permissions-mgr.allowPrivilegeEscalation" . }}
+          runAsUser: {{ .Values.securityContext.runAsUser }}
+          runAsGroup: {{ .Values.securityContext.runAsGroup }}
+          readOnlyRootFilesystem: {{ .Values.securityContext.readOnlyRootFilesystem }}
+          capabilities:
+            drop:
+            - ALL
+            {{- if not .Values.permissionMgrConfigs.root_squash }}
+            add:
+            - CHOWN
+            {{- end }}
+        terminationMessagePath: {{ .Values.permissionsMgrJob.terminationMessagePath }}
+        terminationMessagePolicy: {{ .Values.permissionsMgrJob.terminationMessagePolicy }}
+        volumeMounts:
+{{ toYaml .Values.permissionsMgrJob.volumeMounts | indent 8 }}
+      schedulerName: {{ .Values.permissionsMgrJob.schedulerName }}
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 7 }}
+      serviceAccount: {{ template "eric-enm-permissions-mgr.name" . }}-serviceaccount
+      restartPolicy: {{ .Values.permissionsMgrJob.restartPolicy }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      volumes:
+{{ toYaml .Values.permissionsMgrJob.volumes | indent 6 }}
+      imagePullSecrets:
+        - name: {{ template "eric-enm-permissions-mgr.pullSecrets" . }}

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "eric-enm-permissions-mgr.name" . }}-job
+  labels: {{- include "eric-enm-permissions-mgr.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  {{- include "eric-enm-permissions-mgr.annotations" . | nindent 4 }}
+spec:
+{{- if .Values.global }}
+  {{- if .Values.global.internalIPFamily }}
+  # DR-D1125-018 (Connectivity and Networking)
+  ipFamilies: {{ list .Values.global.internalIPFamily | toStrings }}
+  {{- end }}
+{{- end }}
+  selector:
+    app.kubernetes.io/name: {{ template "eric-enm-permissions-mgr.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      port: 8443
+      protocol: TCP
+      targetPort: 8443

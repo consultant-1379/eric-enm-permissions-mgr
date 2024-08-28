@@ -1,0 +1,371 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "eric-enm-permissions-mgr.name" . }}-configmap
+  labels: {{- include "eric-enm-permissions-mgr.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  {{- include "eric-enm-permissions-mgr.annotations" . | nindent 4 }}
+data:
+    pom.yaml: |
+      project:
+        properties:
+              jboss_username: {{ .Values.permissionMgrConfigs.properties_jboss_username| default "305" | quote  }}
+              jboss_groupname: {{ .Values.permissionMgrConfigs.properties_jboss_groupname| default "206" | quote  }}
+        url: {{ .Values.permissionMgrConfigs.properties_url| default "http://www.ericsson.com" | quote  }}
+        organization:
+              name: {{ .Values.permissionMgrConfigs.properties_name| default "Ericsson" | quote  }}
+        fsmaps:
+              fsmap:
+               -
+                    mapping:
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_directory| default "/ericsson/elect-export-path" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_create_directories| default "/ericsson/elect-export-path,/ericsson/elect-export-path/export_logs_every_1_minute_with_retention_12_hours" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_mount_path| default "/ericsson/elect-export-path" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_claim_name| default "eric-enm-rwxpvc-elect" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_dirmode| default "2770" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_filemode| default "644" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_uid| default "254978" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_gid| default "5051" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_elect_export_path_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_directory| default "/ericsson/tor/data/nameservice" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_create_directories| default "/ericsson/tor/data/nameservice" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_dirmode| default "775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_filemode| default "660" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_nameservice_permissions| default "660" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_directory| default "/ericsson/tor/data/apps" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_create_directories| default "/ericsson/tor/data/apps" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_filemode| default "664" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_apps_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_directory| default "/ericsson/pmic1/fls_file_already_exist" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_create_directories| default "/ericsson/pmic1/fls_file_already_exist" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_mount_path| default "/ericsson/pmic1" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_claim_name| default "eric-enm-rwxpvc-pm1" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_file_already_exist_recurse_directories| default "false" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_directory| default "/ericsson/pmic2/fls_file_already_exist" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_create_directories| default "/ericsson/pmic2/fls_file_already_exist" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_mount_path| default "/ericsson/pmic2" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_claim_name| default "eric-enm-rwxpvc-pm2" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_file_already_exist_recurse_directories| default "false" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_directory| default "/ericsson/pmic1/fls" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_create_directories| default "/ericsson/pmic1/fls" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_mount_path| default "/ericsson/pmic1" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_claim_name| default "eric-enm-rwxpvc-pm1" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic1_fls_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_directory| default "/ericsson/pmic2/fls" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_create_directories| default "/ericsson/pmic2/fls" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_mount_path| default "/ericsson/pmic2" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_claim_name| default "eric-enm-rwxpvc-pm2" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic2_fls_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__directory| default "/ericsson/pmic1/PRODUCTDATA" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__create_directories| default "/ericsson/pmic1/PRODUCTDATA" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__mount_path| default "/ericsson/pmic1" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__claim_name| default "eric-enm-rwxpvc-pm1" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__uid| default "215550" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_pmic1_PRODUCTDATA__recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_directory| default "/ericsson/tor/data/domainProxy" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_create_directories| default "/ericsson/tor/data/domainProxy,/ericsson/tor/data/domainProxy/keystore,/ericsson/tor/data/domainProxy/truststore" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_filemode| default "440" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_permissions| default "440" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_domainProxy_permissions| default "440" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_directory| default "/ericsson/tor/data/cm_events" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_create_directories| default "/ericsson/tor/data/cm_events" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_filemode| default "660" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_cm_events_permissions| default "660" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_directory| default "/ericsson/tor/data/mscm" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscm_permissions| default "660" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_directory| default "/ericsson/tor/data/mscmip" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_data_mscmip_permissions| default "660" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_directory| default "/ericsson/tor/data/fmx" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_create_directories| default "/ericsson/tor/data/fmx,/ericsson/tor/data/fmx/export,/ericsson/tor/data/fmx/modules,/ericsson/tor/data/fmx/moduleserver,/ericsson/tor/data/fmx/moduleserver/repos,/ericsson/tor/data/fmx/var,/ericsson/tor/data/fmx/var/modules,/ericsson/tor/data/fmx/etc,/ericsson/tor/data/fmx/etc/modules,/ericsson/tor/data/fmx/etc/enm_adapter,/ericsson/tor/data/fmx/log,/ericsson/tor/data/fmx/log/modules,/ericsson/tor/data/fmx/dat,/ericsson/tor/data/fmx/dat/modules,/ericsson/tor/data/fmx/sequences,/ericsson/tor/data/fmx/timeperiods" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_mount_path| default "/ericsson/tor/data/fmx/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_claim_name| default "eric-enm-rwxpvc-fmx" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_dirmode| default "775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_uid| default "210" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_gid| default "210" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_data_fmx_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_directory| default "/ericsson/enm/dumps/fmx" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_create_directories| default "/ericsson/enm/dumps/fmx" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_mount_path| default "/ericsson/enm/dumps" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_claim_name| default "eric-enm-rwxpvc-hcdumps" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_dirmode| default "1775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_uid| default "210" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_gid| default "210" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_enm_dumps_fmx_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_directory| default "/ericsson/config_mgt/ebnfToJson" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_create_directories| default "/ericsson/config_mgt/ebnfToJson" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_mount_path| default "/ericsson/config_mgt/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_claim_name| default "eric-enm-rwxpvc-configmgt" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_dirmode| default "2770" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_filemode| default "440" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_ebnfToJson_permissions| default "440" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_directory| default "/ericsson/config_mgt/script_engine" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_create_directories| default "/ericsson/config_mgt/script_engine" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_mount_path| default "/ericsson/config_mgt/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_claim_name| default "eric-enm-rwxpvc-configmgt" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_script_engine_permissions| default "775" | quote  }}
+                     -
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_migration_data_create_directories| default "/ericsson/migration-data/migration-batches" | quote  }}
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_migration_data_directory| default "/ericsson/migration-data/migration-batches" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_migration_data_mount_path| default "/ericsson/migration-data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_migration_data_claim_name| default "eric-enm-pvc-migration-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_migration_data_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_migration_data_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_migration_data_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_migration_data_uid| default "252178" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_migration_data_gid| default "4994" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_migration_data_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_migration_data_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_migration_data_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_migration_data_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_migration_data_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_migration_data_permissions| default "660" | quote  }}
+                     -
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_create_directories| default "/ericsson/tor/data/credm" | quote  }}
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_directory| default "/ericsson/tor/data/credm" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_mount_path| default "/ericsson/tor/data" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_claim_name| default "eric-enm-rwxpvc-data" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_uid| default "252178" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_name| default "properties" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_tor_migration_data_permissions| default "660" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_directory| default "/ericsson/config_mgt/healthcheck" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_create_directories| default "/ericsson/config_mgt/healthcheck" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_mount_path| default "/ericsson/config_mgt/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_claim_name| default "eric-enm-rwxpvc-configmgt" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_healthcheck_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_directory| default "/ericsson/config_mgt/import_files" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_create_directories| default "/ericsson/config_mgt/import_files" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_mount_path| default "/ericsson/config_mgt/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_claim_name| default "eric-enm-rwxpvc-configmgt" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_config_mgt_import_files_recurse_directories| default "true" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_directory| default "/ericsson/batch/undo" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_create_directories| default "/ericsson/batch/undo" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_mount_path| default "/ericsson/batch/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_claim_name| default "eric-enm-rwxpvc-batch" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_dirmode| default "2775" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_filemode| default "775" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_name| default "txt" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_batch_undo_permissions| default "775" | quote  }}
+                     -
+                          directory: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_directory| default "/ericsson/configuration_management/UpgradeIndependence" | quote  }}
+                          create_directories: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_create_directories| default "/ericsson/configuration_management/UpgradeIndependence/node_models,/ericsson/configuration_management/UpgradeIndependence/add_support,/ericsson/configuration_management/UpgradeIndependence/pfm-models,/ericsson/configuration_management/UpgradeIndependence/swsync,/ericsson/configuration_management/UpgradeIndependence/workdir" | quote  }}
+                          mount_path: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_mount_path| default "/ericsson/configuration_management/UpgradeIndependence/" | quote  }}
+                          claim_name: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_claim_name| default "eric-enm-rwxpvc-upgind" | quote  }}
+                          dirmode: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_dirmode| default "2770" | quote  }}
+                          filemode: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_filemode| default "660" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_g_u_bit| default "False" | quote  }}
+                          uid: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_uid| default "308" | quote  }}
+                          gid: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_gid| default "206" | quote  }}
+                          directory_included: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_directory_included| default "true" | quote  }}
+                          recurse_directories: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_recurse_directories| default "true" | quote  }}
+                          file_extensions:
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_name| default "jar" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_permissions| default "660" | quote  }}
+                                file_extension:
+                                      name: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_name| default "json" | quote  }}
+                                      permissions: {{ .Values.permissionMgrConfigs.ericsson_configuration_management_UpgradeIndependence_permissions| default "660" | quote  }}
+        profiles:
+              profile:
+                    id: {{ .Values.permissionMgrConfigs.id_id| default "fsmap_test" | quote  }}
+                    nfsparameters:
+                          environment_type: {{ .Values.permissionMgrConfigs.nfsparameters_environment_type| default "XL" | quote  }}
+                          complete_run: {{ .Values.permissionMgrConfigs.nfsparameters_complete_run| default "False" | quote  }}
+                          run_as_non_root: {{ .Values.permissionMgrConfigs.nfsparameters_run_as_non_root| default "True" | quote  }}
+                          root_squash: {{ .Values.permissionMgrConfigs.root_squash| quote  }}
+                          sticky_bit: {{ .Values.permissionMgrConfigs.nfsparameters_sticky_bit| default "False" | quote  }}
+                          setgid_bit: {{ .Values.permissionMgrConfigs.nfsparameters_setgid_bit| default "True" | quote  }}
+                          setuid_bit: {{ .Values.permissionMgrConfigs.nfsparameters_setuid_bit| default "False" | quote  }}
+                          g_u_bit: {{ .Values.permissionMgrConfigs.nfsparameters_g_u_bit| default "True" | quote  }}
+                          ignore_user: {{ .Values.permissionMgrConfigs.nfsparameters_ignore_user| default "False" | quote  }}
+                          default_dirmode: {{ .Values.permissionMgrConfigs.nfsparameters_default_dirmode| default "2777" | quote  }}
+                          default_filemode: {{ .Values.permissionMgrConfigs.nfsparameters_default_filemode| default "7777" | quote  }}
+                          default_uid: {{ .Values.permissionMgrConfigs.nfsparameters_default_uid| default "308" | quote  }}
+                          default_gid: {{ .Values.permissionMgrConfigs.nfsparameters_default_gid| default "206" | quote  }}
+                          namespace: {{ .Release.Namespace | default "enm8139" | quote }}

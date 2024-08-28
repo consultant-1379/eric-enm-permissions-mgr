@@ -1,0 +1,17 @@
+productName: "Permissions Manager"
+productNumber: "CXD 101 1001"
+images:
+  mainImage:
+    productName: "Permissions Manager"
+    productNumber: "CXU 101 1995"
+    registry: "armdocker.rnd.ericsson.se"
+    repoPath: "proj-enm"
+    name: "eric-enm-permissions-mgr"
+    tag: VERSION
+  reusedImage:
+    productName: "Permissions Manager Reused"
+    productNumber: "CXU 101 1996"
+    registry: "armdocker.rnd.ericsson.se"
+    repoPath: "proj-enm"
+    name: "eric-enm-permissions-mgr"
+    tag: VERSION

@@ -1,0 +1,46 @@
+project:
+  properties:
+    jbossUsername: "305"
+    jbossGroupname: "206"
+  properties_url: "http://www.ericsson.com"
+  organization:
+    properties_name: "Ericsson"
+  fsmaps:
+    mapping:
+     -
+        directory: "/ericsson/config_mgt"
+        claim_name: "eric-enm-rwxpvc-configmgt"
+        uid: "306"
+        gid: "206"
+        directory_included: "true"
+        recurse_directories: "true"
+     -
+        directory: "/ericsson/tor/data"
+        claim_name: "eric-enm-rwxpvc-data"
+        uid: "306"
+        gid: "206"
+        directory_included: "true"
+        recurse_directories: "true"
+     -
+        directory: "/etc/opt/ericsson/ERICmodeldeployment"
+        claim_name: "eric-enm-rwxpvc-mdt"
+        uid: "306"
+        gid: "206"
+        directory_included: "true"
+        recurse_directories: "true"
+        breakpoints:
+          breakpoint:
+           -
+             "-id": 1
+             "-type": ls
+             "#text": /etc/opt/ericsson/ERICmodeldeployment/models/etc/model
+           -
+             "-id": 2
+             "-type": ls
+             "-with": 1
+             "#text": /dps_primarytype
+           -
+             "-id": 3
+             "-type": ls
+             "-with": 1
+             "#text": /oss_edt_ext

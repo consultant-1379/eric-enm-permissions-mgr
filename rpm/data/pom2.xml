@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project>
+    <properties>
+        <jboss_username>305</jboss_username>
+        <jboss_groupname>206</jboss_groupname>
+    </properties>
+    <url>http://www.ericsson.com</url>
+    <organization>
+        <name>Ericsson</name>
+    </organization>
+
+    <fsmaps>
+        <fsmap>
+            <mapping>
+                <directory>/ericsson/config_mgt</directory>
+                <dirmode>550</dirmode>
+                <filemode>550</filemode>
+                <uid>0</uid>
+                <gid>207</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+                <dependency>
+                    <includes>
+                        <include>test.txt</include>
+                        <include>test2.txt</include>
+                        <include>test3.txt</include>
+                    </includes>
+                </dependency>
+            </mapping>
+        </fsmap>
+    </fsmaps>
+    <!--Profiles for site documentation-->
+    <profiles>
+        <profile>
+            <id>fsmap_test</id>
+            <nfsparameters>
+                <complete_run>False</complete_run> <!--Ensures that all mappings run (Useful for debugging or re-running in the case of network failure)-->
+                <run_as_non_root>False</run_as_non_root> <!--Ensures that the script runs as non root (Warning this does incur a performance penalty)-->
+                <sticky_bit>False</sticky_bit> <!-- sets the sticky bit for all permissions mappings-->
+                <setgid_bit>True</setgid_bit> <!-- sets the set gid bit for all permissions mappings-->
+                <setuid_bit>False</setuid_bit> <!-- sets the set uid bit for all permissions mappings-->
+                <g_u_bit>True</g_u_bit> <!-- ensures that group permissions are the same as file permissions -->
+                <ignore_user>False</ignore_user> <!-- ignores user permissions on files and folders -->
+                <default_dirmode>2777</default_dirmode>
+                <default_filemode>7777</default_filemode>
+                <default_username>308</default_username>
+                <default_groupname>207</default_groupname>
+            </nfsparameters>
+        </profile>
+    </profiles>
+</project>

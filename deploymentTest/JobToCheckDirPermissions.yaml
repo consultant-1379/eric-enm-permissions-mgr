@@ -1,0 +1,38 @@
+# Verifying the directories present in /ericsson/tor/data mount which is in eric-enm-rwxpvc-data claim.
+# Add more volumes and volumeMounts as needed
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pvc-validation-job
+spec:
+  template:
+    spec:
+      volumes:
+        - name: script-volume
+          configMap:
+            name: dir-validation
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: eric-enm-rwxpvc-data
+      containers:
+        - name: pvc-validation-container
+          image: busybox
+          command:
+            - "sh"
+            - "-c"
+            - |
+              if [ -f "/script/dir_validation_script.sh" ]; then
+                sh /script/dir_validation_script.sh
+                if [ "$?" == "1" ]; then
+                  exit 1
+                fi
+              else
+                echo "Script not found."
+                exit 1
+              fi
+          volumeMounts:
+            - mountPath: /ericsson/tor/data
+              name: data-volume
+            - mountPath: /script
+              name: script-volume
+      restartPolicy: Never

@@ -1,0 +1,12 @@
+images:
+  eric-enm-permissions-mgr:
+    name: eric-enm-permissions-mgr
+    tag: VERSION
+imageCredentials:
+  mainImage:
+    registry:
+      imagePullPolicy: Always
+    repoPath: proj_oss_releases/enm
+
+permissionMgrConfigs:
+  root_squash: false

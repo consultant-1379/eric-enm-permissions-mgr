@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: apache-config-job-rolebinding
+  labels: {{- include "eric-enm-permissions-mgr.labels" . | nindent 4 }}
+  annotations:
+   {{- $securityPolicy := include "eric-enm-permissions-mgr.securityPolicy.annotations" . | fromYaml -}}
+   {{- $default := include "eric-enm-permissions-mgr.annotations" . | fromYaml -}}
+   {{- include "eric-enm-permissions-mgr.mergeAnnotations" (dict "location" .Template.Name "sources" (list $securityPolicy $default)) | trim | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: apache-config-job-serviceaccount
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: apache-config-job-role
+  apiGroup: rbac.authorization.k8s.io
+  

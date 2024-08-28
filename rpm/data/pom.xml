@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<project>
+    <properties>
+        <jboss_username>305</jboss_username>
+        <jboss_groupname>206</jboss_groupname>
+    </properties>
+    <url>http://www.ericsson.com</url>
+    <organization>
+        <name>Ericsson</name>
+    </organization>
+
+    <fsmaps>
+        <fsmap>
+            <mapping>
+                <directory>/ericsson/config_mgt</directory>
+                <claimName>eric-enm-rwxpvc-configmgt</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/tor/data</directory>
+                <claimName>eric-enm-rwxpvc-data</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+                <file_extensions>
+                    <file_extension>
+                        <name>xml</name>
+                        <permissions>770</permissions>
+                    </file_extension>
+                </file_extensions>
+                <dependency>
+                    <include>
+                        <includes>*.xml</includes>
+                    </include>
+                    <exclude>
+                        <excludes></excludes>
+                    </exclude>
+                </dependency>
+            </mapping>
+            <mapping>
+                <directory>/etc/opt/ericsson/ERICmodeldeployment</directory>
+                <claimName>eric-enm-rwxpvc-mdt</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+                <breakpoints>
+                    <breakpoint id="0" type="ls">/etc/opt/ericsson/ERICmodeldeployment/models/etc/model</breakpoint>
+                </breakpoints>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/netlog</directory>
+                <claimName>eric-enm-rwxpvc-netlog</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/custom</directory>
+                <claimName>eric-enm-rwxpvc-custom</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/enm/dumps</directory>
+                <claimName>eric-enm-rwxpvc-hcdumps</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/enm/dlms/history/data</directory>
+                <claimName>eric-enm-rwxpvc-dlms</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/batch</directory>
+                <claimName>eric-enm-rwxpvc-batch</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/tor/no_rollback</directory>
+                <claimName>eric-enm-rwxpvc-norollback</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/pmic1</directory>
+                <claimName>eric-enm-rwxpvc-pm1</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+            <mapping>
+                <directory>/ericsson/pmic2</directory>
+                <claimName>eric-enm-rwxpvc-pm2</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+            </mapping>
+        </fsmap>
+        <fsmap>
+            <mapping>
+                <directory>/etc/opt/ericsson/ERICmodeldeployment</directory>
+                <claimName>eric-enm-rwxpvc-mdt</claimName>
+                <uid>308</uid>
+                <gid>206</gid>
+                <directory_included>true</directory_included>
+                <recurse_directories>true</recurse_directories>
+                <breakpoints>
+                    <breakpoint id="0" type="ls">/etc/opt/ericsson/ERICmodeldeployment/models/etc/model</breakpoint>
+                    <breakpoint id="1" type="ls" with="0">dps_primarytype</breakpoint>
+                    <breakpoint id="2" type="ls" with="0">oss_edt_ext</breakpoint>
+                    <breakpoint id="3" type="dir" with="1">test</breakpoint>
+                </breakpoints>
+            </mapping>
+        </fsmap>
+    </fsmaps>
+    <!--Profiles for site documentation-->
+    <profiles>
+        <profile>
+            <id>fsmap_test</id>
+            <nfsparameters>
+                <complete_run>False</complete_run> <!--Ensures that all mappings run (Useful for debugging or re-running in the case of network failure)-->
+                <run_as_non_root>True</run_as_non_root> <!--Ensures that the script runs as non root (Warning this does incur a performance penalty)-->
+                <run_as_user>True</run_as_user> <!--Jobs started on in kubernetes to change permissions will start as the username specified in the pom (This negates the performance penalty from running as nonroot)-->
+                <sticky_bit>False</sticky_bit> <!-- sets the sticky bit for all permissions mappings-->
+                <setgid_bit>True</setgid_bit> <!-- sets the set gid bit for all permissions mappings-->
+                <setuid_bit>False</setuid_bit> <!-- sets the set uid bit for all permissions mappings-->
+                <g_u_bit>True</g_u_bit> <!-- ensures that group permissions are the same as file permissions -->
+                <ignore_user>False</ignore_user> <!-- ignores user permissions on files and folders -->
+                <default_dirmode>2777</default_dirmode>
+                <default_filemode>7777</default_filemode>
+                <default_uid>308</default_uid>
+                <default_gid>207</default_gid>
+                <namespace>enm8139</namespace>
+            </nfsparameters>
+        </profile>
+    </profiles>
+</project>

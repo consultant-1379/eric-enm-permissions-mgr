@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<project>
+    <properties>
+        <jboss-username>305</jboss-username>
+        <jboss-groupname>206</jboss-groupname>
+        
+    </properties>
+    <url>http://www.ericsson.com</url>
+    <organization>
+        <name>Ericsson</name>
+    </organization>
+
+    <fsmaps>
+        <mapping>
+            <directory>/home/lciadm100/evadtam/nonroot/eric-enm-permissions-mgr/image_content/foo</directory>
+            <claimName>eric-enm-rwxpvc-configmgt</claimName>
+            <uid>200</uid>
+            <gid>205</gid>
+            <filemode>770</filemode>
+            <dirmode>770</dirmode>
+            <g_u_bit>False</g_u_bit>
+            <directoryIncluded>true</directoryIncluded>
+            <recurseDirectories>true</recurseDirectories>
+            <fileExtensions>
+                <fileExtension>
+                    <name>xml</name>
+                    <permissions>770</permissions>
+                </fileExtension>
+            </fileExtensions>
+            <dependency>
+                <includes>
+                    <include>test.txt</include>
+                </includes>
+            </dependency>
+        </mapping>
+    </fsmaps>
+
+    <!--Profiles for site documentation-->
+    <profiles>
+        <profile>
+            <id>fsmap_test</id>
+            <nfsparameters>
+                <complete_run>False</complete_run> <!--Ensures that all mappings run (Useful for debugging or re-running in the case of network failure)-->
+                <run_as_non_root>False</run_as_non_root> <!--Ensures that the script runs as non root (Warning this does incur a performance penalty)-->
+                <allow_run_as_user>True</allow_run_as_user>
+                <sticky_bit>False</sticky_bit> <!-- sets the sticky bit for all permissions mappings-->
+                <setgid_bit>True</setgid_bit> <!-- sets the set gid bit for all permissions mappings-->
+                <setuid_bit>False</setuid_bit> <!-- sets the set uid bit for all permissions mappings-->
+                <g_u_bit>True</g_u_bit> <!-- ensures that group permissions are the same as file permissions -->
+                <ignore_user>False</ignore_user> <!-- ignores user permissions on files and folders -->
+                <defaultDirmode>2777</defaultDirmode>
+                <defaultFilemode>7777</defaultFilemode>
+                <defaultUid>306</defaultUid>
+                <defaultGid>207</defaultGid>
+                <namespace>enm8139</namespace>
+            </nfsparameters>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,26 @@
+{{- if and (((.Values).global).networkPolicy).enabled ((.Values).networkPolicy).enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ template "eric-enm-permissions-mgr.name" . }}
+  labels: {{- include "eric-enm-permissions-mgr.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  {{- include "eric-enm-permissions-mgr.annotations" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ include "eric-enm-permissions-mgr.name" . }}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              eric-enm-permissions-mgr: "true"
+      ports:
+        - port: 8443
+          protocol: TCP
+{{- end }}
